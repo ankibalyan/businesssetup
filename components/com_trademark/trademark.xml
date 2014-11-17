@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+    <name>com_trademark</name>
+    <creationDate>2014-10-05</creationDate>
+    <copyright>Copyright (C) 2014. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Ankit Kumar</author>
+    <authorEmail>ankit.kr.balyan@gmail.com</authorEmail>
+    <authorUrl>http://igotstudy.com/ankit</authorUrl>
+    <version>1.0.0</version>
+    <description>Trademarks</description>
+    
+    
+    
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>trademark.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>assets</folder>
+    </files>
+    <languages folder="site">
+        
+			<language tag="en-GB">language/en-GB/en-GB.com_trademark.ini</language>
+			<language tag="fr-FR">language/fr-FR/fr-FR.com_trademark.ini</language>
+    </languages>
+    <administration>
+        <menu img="components/com_trademark/assets/images/s_com_trademark.png" >COM_TRADEMARK</menu>
+        <submenu>
+            
+			<menu link="option=com_trademark&amp;view=trademarks" view="trademarks" img="components/com_trademark/assets/images/s_trademarks.png" alt="Trademark/Trademarks">COM_TRADEMARK_TITLE_TRADEMARKS</menu>
+
+			<menu link="option=com_trademark&amp;view=trademarkservicess" view="trademarkservicess" img="components/com_trademark/assets/images/s_trademarkservicess.png" alt="Trademark/Trademarkservicess">COM_TRADEMARK_TITLE_TRADEMARKSERVICESS</menu>
+
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>trademark.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>language</folder>
+        </files>
+        <languages folder="administrator">
+            
+			<language tag="en-GB">language/en-GB/en-GB.com_trademark.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_trademark.sys.ini</language>
+			<language tag="fr-FR">language/fr-FR/fr-FR.com_trademark.ini</language>
+			<language tag="fr-FR">language/fr-FR/fr-FR.com_trademark.sys.ini</language>
+        </languages>
+    </administration>
+    <plugins>
+        <plugin group="search" plugin="trademark"/>
+    </plugins>
+    
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.component-creator.com/ -->

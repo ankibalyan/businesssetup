@@ -1,0 +1,71 @@
+<?php
+/**
+ * @version     1.0.0
+ * @package     com_opc_services
+ * @copyright   Copyright (C) 2014. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Ankit Balyan <ankit.kr.balyan@gmail.com> - http://igotstudy.com
+ */
+// no direct access
+defined('_JEXEC') or die;
+
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+JHtml::_('formbehavior.chosen', 'select');
+JHtml::_('behavior.keepalive');
+
+// Import CSS
+$document = JFactory::getDocument();
+$document->addStyleSheet('components/com_opc_services/assets/css/opc_services.css');
+?>
+<script type="text/javascript">
+    js = jQuery.noConflict();
+    js(document).ready(function() {
+        
+    });
+
+    Joomla.submitbutton = function(task)
+    {
+        if (task == 'custom.cancel') {
+            Joomla.submitform(task, document.getElementById('custom-form'));
+        }
+        else {
+            
+            if (task != 'custom.cancel' && document.formvalidator.isValid(document.id('custom-form'))) {
+                
+                Joomla.submitform(task, document.getElementById('custom-form'));
+            }
+            else {
+                alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')); ?>');
+            }
+        }
+    }
+</script>
+
+<form action="<?php echo JRoute::_('index.php?option=com_opc_services&layout=edit&id=' . (int) $this->item->id); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="custom-form" class="form-validate">
+
+    <div class="form-horizontal">
+        <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
+
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_OPC_SERVICES_TITLE_CUSTOM', true)); ?>
+        <div class="row-fluid">
+            <div class="span10 form-horizontal">
+                <fieldset class="adminform">
+
+                    
+
+                </fieldset>
+            </div>
+        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
+        
+        
+
+        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+
+        <input type="hidden" name="task" value="" />
+        <?php echo JHtml::_('form.token'); ?>
+
+    </div>
+</form>

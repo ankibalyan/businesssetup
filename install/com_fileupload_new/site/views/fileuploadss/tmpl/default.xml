@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_FILEUPLOAD_TITLE_LIST_VIEW_FILEUPLOADSS" option="View">
+        <message>
+                        <![CDATA[COM_FILEUPLOAD_TITLE_LIST_VIEW_FILEUPLOADSS_DESC]]>
+        </message>
+	</layout>
+</metadata>

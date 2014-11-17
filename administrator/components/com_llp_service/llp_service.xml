@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+    <name>com_llp_service</name>
+    <creationDate>2014-09-09</creationDate>
+    <copyright>Copyright (C) 2014. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Ankit</author>
+    <authorEmail>ankit.kr.balyan@gmail.com</authorEmail>
+    <authorUrl>http://igotstudy.com</authorUrl>
+    <version>1.0.0</version>
+    <description>LLP Service Flow</description>
+    
+    
+    
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>llp_service.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>assets</folder>
+    </files>
+    <languages folder="site">
+        
+			<language tag="en-GB">language/en-GB/en-GB.com_llp_service.ini</language>
+    </languages>
+    <administration>
+        <menu img="components/com_llp_service/assets/images/s_com_llp_service.png" >COM_LLP_SERVICE</menu>
+        <submenu>
+            
+			<menu link="option=com_llp_service&amp;view=rregistrationforms" view="rregistrationforms" img="components/com_llp_service/assets/images/s_rregistrationforms.png" alt="Llp_service/Rregistrationforms">COM_LLP_SERVICE_TITLE_RREGISTRATIONFORMS</menu>
+
+			<menu link="option=com_llp_service&amp;view=serviceflows" view="serviceflows" img="components/com_llp_service/assets/images/s_serviceflows.png" alt="Llp_service/Serviceflows">COM_LLP_SERVICE_TITLE_SERVICEFLOWS</menu>
+
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>llp_service.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>language</folder>
+        </files>
+        <languages folder="administrator">
+            
+			<language tag="en-GB">language/en-GB/en-GB.com_llp_service.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_llp_service.sys.ini</language>
+        </languages>
+    </administration>
+    <plugins>
+        <plugin group="search" plugin="llp_service"/>
+    </plugins>
+    
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.component-creator.com/ -->

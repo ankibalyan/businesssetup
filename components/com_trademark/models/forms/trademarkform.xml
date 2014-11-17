@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_TRADEMARK_FORM_LBL_TRADEMARK_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_CREATED_BY"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_CREATED_BY"  /> 
+
+       <field name="record_id" type="text" size="40" class="inputbox"
+        
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_RECORD_ID"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_RECORD_ID" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="user_id" type="text" size="40" class="inputbox"
+        
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_USER_ID"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_USER_ID" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="service_id" type="text" size="40" class="inputbox"
+        
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SERVICE_ID"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SERVICE_ID" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="applicant_name" type="text"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_APPLICANT_NAME"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_APPLICANT_NAME" 
+                
+                
+                 required="true"  /> 
+
+       <field name="doc_attachment" type="file"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_DOC_ATTACHMENT"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_DOC_ATTACHMENT" 
+                
+                
+                
+            upload_directory="user/docs"
+            max_size="2" /> 
+
+       <field name="doc_address" type="file"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_DOC_ADDRESS"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_DOC_ADDRESS" 
+                
+                
+                
+            upload_directory="user/docs"
+            max_size="2" /> 
+
+       <field name="type" type="text"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_TYPE"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_TYPE" 
+                 default="service" 
+                
+                
+            filter="tel" /> 
+
+       <field name="all_directors_fullname" type="text"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_ALL_DIRECTORS_FULLNAME"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_ALL_DIRECTORS_FULLNAME" 
+                
+                
+                
+            filter="array" /> 
+
+       <field name="signatory_fullname" type="text"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SIGNATORY_FULLNAME"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SIGNATORY_FULLNAME" 
+                
+                
+                 /> 
+
+       <field name="signatory_phoneno" type="text" size="40" class="inputbox"
+        
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SIGNATORY_PHONENO"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SIGNATORY_PHONENO" 
+        
+         validate="tel" 
+        
+        filter="safehtml" /> 
+
+ 
+		<field name="signatory_email" type="email" label="Signatory Email" description="signatory email" validate="email"   /> 
+
+       <field name="signatory_nationality" type="text"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SIGNATORY_NATIONALITY"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SIGNATORY_NATIONALITY" 
+                 default="Indian" 
+                
+                 /> 
+
+       <field name="signatory_gaurdian_name" type="text"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SIGNATORY_GAURDIAN_NAME"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SIGNATORY_GAURDIAN_NAME" 
+                
+                
+                 /> 
+
+       <field name="signatory_address" type="textarea"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SIGNATORY_ADDRESS"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SIGNATORY_ADDRESS" 
+                
+                
+                
+            cols="100"
+            rows="8" /> 
+
+       <field name="signatory_age" type="text" size="40" class="inputbox"
+        
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SIGNATORY_AGE"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SIGNATORY_AGE" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="trademark_name" type="text"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_TRADEMARK_NAME"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_TRADEMARK_NAME" 
+                
+                
+                 /> 
+
+       <field name="trademark_desc" type="textarea"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_TRADEMARK_DESC"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_TRADEMARK_DESC" 
+                
+                
+                
+            cols="100"
+            rows="8" /> 
+
+       <field name="trademark_state" type="list"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_TRADEMARK_STATE"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_TRADEMARK_STATE" 
+                
+                
+                
+            multiple="true">
+                <option value="manufacturer">Manufacturer</option>
+                <option value="trader">Trader</option>
+                <option value="serviceprovider">Service Provider</option>
+        </field> 
+
+       <field name="service_address" type="textarea"
+                
+            label="COM_TRADEMARK_FORM_LBL_TRADEMARK_SERVICE_ADDRESS"
+            description="COM_TRADEMARK_FORM_DESC_TRADEMARK_SERVICE_ADDRESS" 
+                
+                
+                
+            cols="100"
+            rows="8" /> 
+
+        
+         <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" /> 
+
+ </fieldset> 
+
+</form>

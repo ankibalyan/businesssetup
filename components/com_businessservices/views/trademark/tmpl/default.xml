@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+        <layout title="COM_BUSINESSSERVICES_TRADEMARK_VIEW_DEFAULT_TITLE">
+                <message>
+                        <![CDATA[COM_BUSINESSSERVICES_TRADEMARK_VIEW_DEFAULT_DESC]]>
+                </message>
+        </layout>
+        <fields name="request">
+                <fieldset name="request" addfieldpath="/administrator/components/com_businessservices/models/fields">
+                        <field
+                                name="id"
+                                type="trademark"
+                                label="COM_BUSINESSSERVICES_TRADEMARK_FIELD_GREETING_LABEL"
+                                description="COM_BUSINESSSERVICES_TRADEMARK_FIELD_GREETING_DESC"
+						>
+                        </field>
+                </fieldset>
+        </fields>
+</metadata>
