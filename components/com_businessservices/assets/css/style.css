@@ -235,6 +235,9 @@
 .sfContainer table tr:nth-child(even){
 	background: #dadada;
 }
+.sfContainer table tr td{
+	border-bottom: 1px solid #fff;
+}
 .sfContainer table{
 	padding: 5px;
 }

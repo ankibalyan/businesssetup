@@ -189,6 +189,21 @@ class BusinessServicesModelTrademark extends JModelItem
         // $db->setQuery($query);
         // return $rows = $db->loadObjectList();
     }
+    public function getRegisteredUsers()
+    {
+        jimport('joomla.access.access');
+        jimport('joomla.user.user');
+        $users = JAccess::getUsersByGroup(2); // in my project it was $self::REGISTERED_GROUP
+        $array = array();
+        foreach ($users as $key) {
+            $array[$key] = JFactory::getUser($key);
+        }
+        return $array;
+        // $db =& JFactory::getDBO();
+        // $query = "SELECT * FROM #__users" ;
+        // $db->setQuery($query);
+        // return $rows = $db->loadObjectList();
+    }
     protected function populateState($ordering = null, $direction = null) {
 
         // Initialise variables.

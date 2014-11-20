@@ -53,6 +53,7 @@ class BusinessServicesViewDashboard extends JViewLegacy
                 $this->menu = array(
                 'user_home' => 'index.php/component/businessservices',
                 'profile' => 'index.php?view=profile&layout=edit&tmpl=component',
+                'Clients' => 'index.php/component/businessservices?layout=clients',
                 'services' => array(
                         'all' => 'index.php/component/businessservices?layout=services',
                         'pending' => 'index.php/component/businessservices?layout=pending',
@@ -62,7 +63,7 @@ class BusinessServicesViewDashboard extends JViewLegacy
                 'query_inbox' => 'index.php/component/businessservices?view=message&amp;list=all',
                 'raise_an_issue' => 'index.php/component/businessservices?view=message',
                  );
-                $this->service_name  = array('0' => 'AJURI::root(false).ny',
+                $this->service_name  = array('0' => 'Any',
                                 '1' => 'Privare Limited Company',
                                 '2' => 'Limited Liability',
                                 '3' => 'One Person Company',
@@ -88,7 +89,6 @@ class BusinessServicesViewDashboard extends JViewLegacy
                 {
                     $value = JURI::root(false).'index.php/component/'.$value;
                 });
-
                 $trademark_m = JModelLegacy::getInstance('Trademark', 'BusinessServicesModel');
                 if(isset($this->statuses[trim($this->getLayout())]))
                         {
@@ -129,6 +129,10 @@ class BusinessServicesViewDashboard extends JViewLegacy
                 $this->allTotal = $trademark_m->getServicesCount(null,TRUE)->total;
                 $this->pendingTotal = $trademark_m->getServicesCount("pending",TRUE)->total;
                 $this->completedTotal = $trademark_m->getServicesCount("completed",TRUE)->total;
+                if($this->getLayout() == 'clients')
+                { 
+                    $this->registered = $trademark_m->getRegisteredUsers();
+                }
                 // Check for errors.
                 if (count($errors = $this->get('Errors'))) 
                 {
