@@ -15,6 +15,7 @@ defined('_JEXEC') or die;
 	// 	//print_r($this->trademarkPending);
  //    echo "</pre>";
 ?>
+<?php BusinessServicesHelpersHelper::dataSorts(); ?>
 <div class="sfContainer">
 	<div class="sfGrids">
 		<div class="sfGrid-Col-3">
@@ -33,7 +34,7 @@ defined('_JEXEC') or die;
 						<div class="sfGrid-Col-10 col-centered">
 							<div class="sfGrids col-bordered">
 								<?php if(count($this->trademarkPending)): ?>
-								<table>
+								<table id="services">
 									<thead>
 										<tr>
 											<th>Service ID</th>

@@ -33,4 +33,6 @@ jQuery("#datepicker").datepicker({
 
 		jQuery( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
 		jQuery( "#dialog" ).dialog();
-	});
+
+    jQuery('#services').DataTable();
+});

@@ -15,6 +15,7 @@ defined('_JEXEC') or die;
 	// 	//print_r($this->trademarkPending);
  //    echo "</pre>";
 ?>
+<?php BusinessServicesHelpersHelper::dataSorts(); ?>
 <div class="sfContainer">
 	<div class="sfGrids">
 		<div class="sfGrid-Col-3">
@@ -33,7 +34,7 @@ defined('_JEXEC') or die;
 						<div class="sfGrid-Col-10 col-centered">
 							<div class="sfGrids col-bordered">
 								<?php if(count($this->trademarkPending)): ?>
-								<table>
+								<table id="services">
 									<thead>
 										<tr>
 											<th>Registerd ID</th>
@@ -46,9 +47,9 @@ defined('_JEXEC') or die;
 										<?php foreach ($this->trademarkPending as $service){ ?>
 										<tr>
 											<td><?php echo "$service->register_id"; ?></td>
-											<td><a href="<?php echo $this->links[$service->service_flag];?>"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
-											<td><?php echo $service->date_created; ?></td>
-											<td><?php echo $service->status; ?></td>
+											<td><a href="<?php echo $this->links[$service->service_flag];?>" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
+											<td><?php echo substr($service->date_created, 0, 10) ?></td>
+											<td class="<?php echo $service->status ?>"><?php echo $this->statuses[$service->status]; ?></td>
 										</tr>
 										<?php } ?>
 									</tbody>

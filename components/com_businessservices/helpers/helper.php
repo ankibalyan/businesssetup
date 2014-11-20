@@ -78,4 +78,15 @@ class BusinessServicesHelpersHelper
 			</div>	
 		<?php endif; ?>
     <?php }
+
+    static function dataSorts()
+    {
+    	$document = JFactory::getDocument();
+         
+        //stylesheets
+        $document->addStylesheet(JURI::base().'components/com_businessservices/assets/css/jquery.dataTables.min.css');
+         
+        //javascripts
+        $document->addScript(JURI::base().'components/com_businessservices/assets/js/jquery.dataTables.min.js');
+    }
 }

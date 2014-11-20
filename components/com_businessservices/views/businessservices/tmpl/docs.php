@@ -49,7 +49,6 @@ defined('_JEXEC') or die;
 								<table>
 									<thead>
 										<tr>
-											<th>Service Id</th>
 											<th>Service Name</th>
 											<th>Linked to</th>
 											<th>view / edit</th>
@@ -57,12 +56,13 @@ defined('_JEXEC') or die;
 									</thead>
 									<tbody>
 										<?php foreach ($this->allDocs as $service){ ?>
-
+											<tr>
+												<td>Service Id: <?php echo "$service->register_id"; ?></td>
+											</tr>
 										<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
 											<?php $adr = "client-docs/".$this->user->username.'/'.$service->director_photograph_file; ?>
 											<?php if (file_exists($adr)): ?>
 												<tr>
-													<td><?php echo "$service->register_id"; ?></td>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director photograph file"; ?></td>
 													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>

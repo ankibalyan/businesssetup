@@ -9,9 +9,11 @@ class BusinessServicesHelpersStyle
         $document = JFactory::getDocument();
          
         //stylesheets
-        $document->addStylesheet(JURI::base().'components/com_lendr/assets/css/style.css');
+        $document->addStylesheet(JURI::base().'components/com_businessservices/assets/css/style.css');
          
         //javascripts
-        $document->addScript(JURI::base().'components/com_lendr/assets/js/sfcusDash.js');
+        $document->addScript(JURI::base().'components/com_businessservices/assets/js/sfcusDash.js');
     }
+
+    
 }
