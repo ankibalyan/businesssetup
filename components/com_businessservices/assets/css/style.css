@@ -267,4 +267,60 @@ table.ui-datepicker-calendar tbody td.highlight > a {
     color: #fff;
     border: 1px solid #FFDE2E;
 }
+.sfContactForm textarea.sfComment{
+	display: block !important;
+}
+.td-100{
+	width: 100px !important;
+}
+.sorting_asc{
+	color: #ffaa33;
+	border-top: 15px solid #ffaa33;
+	/* border-bottom: 10px solid transparent;*/
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+	content: ''
+}
+.sorting_desc{
+	color: #ffaa33;
+	/* border-top: 15px solid red; */
+	border-bottom: 15px solid #ffaa33;
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+	content: ''
+}
+
+/* css cross shape */
+
+#cross {
+   width: 20px;
+   height: 20px;
+   position: relative;
+  transform:rotate(45deg);
+-ms-transform:rotate(45deg); /* IE 9 */
+-webkit-transform:rotate(45deg); /* Safari and Chrome */
+}
+
+#cross:before, #cross:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: #d00;
+}
+
+#cross:before {
+  left: 50%;
+  width: 30%;
+  margin-left: -15%;
+  height: 100%;
+}
+
+#cross:after {
+  top: 50%;
+  height: 30%;
+  margin-top: -15%;
+  width: 100%;
+}
+
+
 /* customer Dashboard Ends */ 

@@ -94,9 +94,9 @@ class BusinessServicesViewBusinessServices extends JViewLegacy
 
                 $this->profile = $trademark_m->get_profile_info();
                 //echo "<pre>";print_r($this->profile);echo "</pre>";
-                $this->allTotal = $trademark_m->getServicesCount(null,FALSE)->total;
-                $this->pendingTotal = $trademark_m->getServicesCount("pending",FALSE)->total;
-                $this->completedTotal = $trademark_m->getServicesCount("completed",FALSE)->total;
+                $this->allTotal = $trademark_m->getServicesCount(null,$this->user->id)->total;
+                $this->pendingTotal = $trademark_m->getServicesCount("pending",$this->user->id)->total;
+                $this->completedTotal = $trademark_m->getServicesCount("completed",$this->user->id)->total;
                 $this->app = JFactory::getApplication();
 
                  if($input->getInt('msg') != NULL && $input->getInt('msg') != 0)

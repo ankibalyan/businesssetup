@@ -142,9 +142,9 @@ class BusinessServicesModelTrademark extends JModelItem
         //print_r($results);
         return $results;
      }
-     public function getServicesCount($status=null,$Alluser = FALSE)
+     public function getServicesCount($status=null,$userId = FALSE)
      {
-        ($Alluser) ? $usercondition = "1" : $usercondition = "a.userId = '$this->userId'";
+        ($userId) ? $usercondition = "a.userId = '$userId'" : $usercondition = "1";
         $db = $this->getDbo();
         if($status && $status == 'pending'){
             $strQry="SELECT count(*) as total FROM #__client_company_registration as a 
@@ -163,6 +163,21 @@ class BusinessServicesModelTrademark extends JModelItem
         $result = $db->loadObject();
         return $result;
      }
+
+    public function getServiceUser($id = NULL)
+    {
+        if($id){
+            $db = JFactory::getDBO();
+            $query = $db->getQuery(true);
+            // delete all custom keys for user 1001.
+            $query->SELECT(array('userId'));
+            $query->where($db->quoteName('register_id') . '=' . $id);
+            $query->from($db->quoteName('#__client_company_registration'));
+            // /die;
+            $db->setQuery($query);
+            return $result = $db->loadObject()->userId;
+        }
+    }
 
     public function get_profile_info() {
 
@@ -195,6 +210,7 @@ class BusinessServicesModelTrademark extends JModelItem
         jimport('joomla.user.user');
         $users = JAccess::getUsersByGroup(2); // in my project it was $self::REGISTERED_GROUP
         $array = array();
+
         foreach ($users as $key) {
             $array[$key] = JFactory::getUser($key);
         }
@@ -238,4 +254,19 @@ class BusinessServicesModelTrademark extends JModelItem
         return $items;
     }
 
+    public function upload($files,$uname=NULL)
+    {
+        foreach ($files as $file) {
+        $file_name = $file['name'];
+        $src = $file['tmp_name'];
+        $size = $file['size'];
+        $upload_error = $file['error'];
+        $type = $file['type'];
+        $dest = JPATH_ROOT."/client-docs/$uname/$file_name";
+        if (isset($file_name) && $file_name !=NULL && $file_name != '') {
+        // Move the uploaded file.
+        return JFile::upload( $src, $dest );
+        }
+        }
+    }
 }

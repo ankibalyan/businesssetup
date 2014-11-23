@@ -35,4 +35,5 @@ jQuery("#datepicker").datepicker({
 		jQuery( "#dialog" ).dialog();
 
     jQuery('#services').DataTable();
+    jQuery('#clients').DataTable();
 });

@@ -16,11 +16,11 @@ class JConfig {
 	public $db = 'db_businesssetup';
 	public $dbprefix = 'awfrq_';
 	public $dbtype = 'mysqli';
-	public $debug = '0';
+	public $debug = '1';
 	public $debug_lang = '0';
 	public $display_offline_message = '1';
 	public $editor = 'tinymce';
-	public $error_reporting = 'default';
+	public $error_reporting = 'maximum';
 	public $feed_email = 'author';
 	public $feed_limit = '10';
 	public $force_ssl = '0';

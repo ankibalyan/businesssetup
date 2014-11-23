@@ -39,11 +39,12 @@ defined('_JEXEC') or die;
 										<tr>
 											<th>Service ID</th>
 											<th>Username</th>
-											<th>Service Name</th>
+											<th class="td-100">Service Name</th>
+											<th>State</th>
 											<th>Applied On</th>
 											<th>Status</th>
 											<th>Edit</th>
-											<th>Delete</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -51,11 +52,12 @@ defined('_JEXEC') or die;
 										<tr>
 											<td><?php echo "$service->register_id"; ?></td>
 											<td><?php echo JFactory::getUser($service->userId)->username; ?></td>
-											<td><a href="<?php echo $this->links[$service->service_flag];?>" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
+											<td class="td-100"><a href="<?php echo $this->links[$service->service_flag];?>" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
+											<td><?php echo "$service->country_state"; ?></td>
 											<td><?php echo substr($service->date_created, 0, 10) ?></td>
 											<td class="<?php echo $service->status ?>"><?php echo $this->statuses[$service->status]; ?></td>
 											<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="View Record"> Edit </a></td>
-											<td><a href="<?php echo jRoute::_("index.php?option=com_businessservices&task=del&Itemid=$service->register_id&msg=3") ?>" title="Delete Record"> X </a></td>
+											<td><a href="<?php echo jRoute::_("index.php?option=com_businessservices&task=del&Itemid=$service->register_id&msg=3") ?>" title="Delete Record"><div id="cross"></div></a></td>
 										</tr>
 										<?php } ?>
 									</tbody>

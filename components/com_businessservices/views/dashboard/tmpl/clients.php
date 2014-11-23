@@ -15,13 +15,13 @@ defined('_JEXEC') or die;
 	// 	//print_r($this->trademarkPending);
  //    echo "</pre>";
 ?>
-<?php BusinessregistersHelpersHelper::dataSorts(); ?>
+<?php BusinessServicesHelpersHelper::dataSorts(); ?>
 <div class="sfContainer">
 	<div class="sfGrids">
 		<div class="sfGrid-Col-3">
 			<div class="sfGrids">
 				<div class="sfGrid-Col-12">
-					<?php BusinessregistersHelpersHelper::menu($this->menu); ?>
+					<?php BusinessServicesHelpersHelper::menu($this->menu); ?>
 					<div id="datepicker"></div>
 				</div>
 			</div>
@@ -33,27 +33,29 @@ defined('_JEXEC') or die;
 					<div class="sfGrids">
 						<div class="sfGrid-Col-12 col-centered">
 							<div class="sfGrids col-bordered">
-								<?php if(count($this->register)): ?>
+								<?php if(count($this->registered)): ?>
 								<table id="clients">
 									<thead>
 										<tr>
-											<th>User ID</th>
+											<!-- <th>User ID</th> -->
 											<th>Username</th>
 											<th>Email</th>
 											<th>Phone On</th>
-											<th>Assign</th>
+											<th>Total Services</th>
+											<th>Registered On</th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach ($this->register as $register){ ?>
+										<?php foreach ($this->registered as $register){ ?>
 										<tr>
-											<td><?php echo "$register->register_id"; ?></td>
-											<td><?php echo JFactory::getUser($register->userId)->username; ?></td>
-											<td><a href="<?php echo $this->links[$register->register_flag];?>" title="View Record"><?php echo $this->register_name[$register->register_flag]; ?></a></td>
-											<td><?php echo substr($register->date_created, 0, 10) ?></td>
-											<td class="<?php echo $register->status ?>"><?php echo $this->statuses[$register->status]; ?></td>
-											<td><a href='<?php echo jRoute::_("index.php?option=com_businessregisters&layout=register&Itemid=$register->register_id") ?>' title="View Record"> Edit </a></td>
-											<td><a href="<?php echo jRoute::_("index.php?option=com_businessregisters&task=del&Itemid=$register->register_id&msg=3") ?>" title="Delete Record"> X </a></td>
+											<!-- <td><?php //echo "$register->id"; ?></td> -->
+											<td><?php echo $register->username; ?></td>
+											<td><?php echo $register->email; ?></td>
+											<td><?php echo $phone = (isset(JUserHelper::getProfile($register->id)->profile['phone']))? JUserHelper::getProfile($register->id)->profile['phone'] : ' - '; ?></td>
+											<td><?php echo $this->trademark_m->getServicesCount(null,$register->id)->total ?></td>
+											<td><?php echo substr($register->registerDate, 0, 10) ?></td><!-- 
+											<td><a href='<?php echo jRoute::_("index.php?option=com_businessregisters&layout=register&Itemid=$register->register_id") ?>' title="View Record"> Edit </a></td> --><!-- 
+											<td><a href="<?php echo jRoute::_("index.php?option=com_businessregisters&task=del&Itemid=$register->register_id&msg=3") ?>" title="Delete Record"> X </a></td> -->
 										</tr>
 										<?php } ?>
 									</tbody>

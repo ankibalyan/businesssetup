@@ -34,6 +34,7 @@ class BusinessServicesViewDashboard extends JViewLegacy
         protected $admins;
         protected $msg;
         protected $notify;
+        protected $trademark_m;
         /**
          * Display the Business Services view
          *
@@ -85,11 +86,12 @@ class BusinessServicesViewDashboard extends JViewLegacy
                                 '4' => 'publiclc/serviceflow',
                                 '5' => 'trademark/trademarkservices',
                     );
+
                array_walk($this->links,function(&$value)
                 {
                     $value = JURI::root(false).'index.php/component/'.$value;
                 });
-                $trademark_m = JModelLegacy::getInstance('Trademark', 'BusinessServicesModel');
+                $this->trademark_m = JModelLegacy::getInstance('Trademark', 'BusinessServicesModel');
                 if(isset($this->statuses[trim($this->getLayout())]))
                         {
                                $this->status = ucwords($this->statuses[trim($this->getLayout())]);
@@ -98,20 +100,25 @@ class BusinessServicesViewDashboard extends JViewLegacy
 
                 if($input->getInt('Itemid') != NULL && $input->getInt('Itemid') != 0)
                 {
-                        $data = $this->app->input->post->get('sfFormService',null,null);
+
+                        $useri = $this->trademark_m->getServiceUser($input->getInt('Itemid')); // get the user id of current item id
+                        $data = $this->app->input->post->get('sfFormService',null,null); 
+                        $file = $this->app->input->files->get('sfFormService'); 
                         //die;
-                        $notify = (count($data)) ? $trademark_m->saveService($data) : '' ;
+                        $uploads = (count($data)) ? $this->trademark_m->upload($file['processDocs'],JFactory::getUser($useri)->username) : '' ;
+                        //die;
+                        $notify = (count($data)) ? $this->trademark_m->saveService($data) : '' ;
                         ($notify) ? $this->notify = 2 : $this->notify = null;
                         
-                        $this->service = $trademark_m->getServices($input->getInt('Itemid'),NULL,TRUE,TRUE);
-                        $this->admins = $trademark_m->getAllUsers();
+                        $this->service = $this->trademark_m->getServices($input->getInt('Itemid'),NULL,TRUE,TRUE);
+                        $this->admins = $this->trademark_m->getAllUsers();
                 }
                 if($input->getString('task') == 'del' && $input->getInt('Itemid') != NULL && $input->getInt('Itemid') != 0)
                 {
-                        $this->service = $trademark_m->getServices($input->getInt('Itemid'),NULL,TRUE,TRUE);
+                        $this->service = $this->trademark_m->getServices($input->getInt('Itemid'),NULL,TRUE,TRUE);
                         //$data = $this->app->input->post->get('sfFormService',null,null);
                         //die;
-                        $notify = (count($this->service)) ? $trademark_m->delService($input->getInt('Itemid')) : '' ;
+                        $notify = (count($this->service)) ? $this->trademark_m->delService($input->getInt('Itemid')) : '' ;
                         ($notify) ? $this->notify = 3 : $this->notify = null;
                 }
 
@@ -121,17 +128,17 @@ class BusinessServicesViewDashboard extends JViewLegacy
                     $this->notify = $input->getInt('msg');
                 }
 
-                $this->trademarkPending = $trademark_m->getServices(null,"$this->status",TRUE,TRUE);
-                $this->allDocs = $trademark_m->getDocs(TRUE);
+                $this->trademarkPending = $this->trademark_m->getServices(null,"$this->status",TRUE,TRUE);
+                $this->allDocs = $this->trademark_m->getDocs(TRUE);
 
-                $this->profile = $trademark_m->get_profile_info();
+                $this->profile = $this->trademark_m->get_profile_info();
                 //echo "<pre>";print_r($this->profile);echo "</pre>";
-                $this->allTotal = $trademark_m->getServicesCount(null,TRUE)->total;
-                $this->pendingTotal = $trademark_m->getServicesCount("pending",TRUE)->total;
-                $this->completedTotal = $trademark_m->getServicesCount("completed",TRUE)->total;
+                $this->allTotal = $this->trademark_m->getServicesCount(null,FALSE)->total;
+                $this->pendingTotal = $this->trademark_m->getServicesCount("pending",FALSE)->total;
+                $this->completedTotal = $this->trademark_m->getServicesCount("completed",FALSE)->total;
                 if($this->getLayout() == 'clients')
                 { 
-                    $this->registered = $trademark_m->getRegisteredUsers();
+                    $this->registered = $this->trademark_m->getRegisteredUsers();
                 }
                 // Check for errors.
                 if (count($errors = $this->get('Errors'))) 

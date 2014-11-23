@@ -32,8 +32,8 @@ defined('_JEXEC') or die;
 					<div class="sfGrids">
 						<div class="sfGrid-Col-10 col-centered">
 							<div class="sfGrids col-bordered">
-								<?php if(count($this->service)): ?>
-									<h3 class="title"><?php echo $this->service_name[$this->service['0']->service_flag] ?></h3>
+								<?php if(count($this->event)): ?>
+									<h3 class="title">Event Mangement</h3>
 									<div class="formContainer">
 									<form action="" method="POST" name="sfFormService[form]" enctype="multipart/form-data">
 										<label for="">Status</label>
