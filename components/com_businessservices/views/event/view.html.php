@@ -17,7 +17,7 @@ jimport('joomla.application.component.view');
 *
 * @since 0.0.1
 */
-class BusinessServicesViewMessage extends JViewLegacy
+class BusinessServicesViewEvent extends JViewLegacy
 {
         /**
          * Display the Business Services view
@@ -29,9 +29,11 @@ class BusinessServicesViewMessage extends JViewLegacy
         protected $notify;
         protected $user;
         protected $app;
-        protected $msg;
+        protected $event;
         protected $can_user;
         protected $menu;
+        protected $trademark_m;
+        protected $registered;
         public function __construct()
         {
                 parent::__construct();
@@ -76,31 +78,30 @@ class BusinessServicesViewMessage extends JViewLegacy
         }
         public function display($tpl = null) 
         {
-                $this->model = $this->getModel ( 'Message' );
-                $input = JFactory::getApplication()->input;
+                $this->model = $this->getModel ( 'Event' );
+                $this->trademark_m = JModelLegacy::getInstance('Trademark', 'BusinessServicesModel');
                 BusinessServicesHelpersHelper::dataSorts();
-                $data = $this->app->input->post->get('sfForm',null,null);
-                $this->notify = (count($data)) ? $this->model->saveMessage($data) : '' ;
+                $input = JFactory::getApplication()->input;
+                $this->registered = $this->trademark_m->getRegisteredUsers();
+                $data = $this->app->input->post->get('sfFormEvent',null,null);
+                $this->notify = (count($data)) ? $this->model->saveEvent($data) : '' ;
                 if($input->getInt('Itemid'))
                 {
-                        $this->setLayout('default');
-                        $this->msg = $this->model->getMessages($input->getInt('Itemid'));
+                        $this->event = $this->model->getEvent($input->getInt('Itemid'));
                 }
-                if($input->get('rec')==='history')
-                {
-                        $this->setLayout('list');
-                        $this->allMsg = $this->model->getMessages(null,$this->user->id);
+                else{
+                    unset($this->event);
                 }
-                if($input->get('list')==='all')
+                if($input->get('layout')==='list')
                 {
                         $this->setLayout('list');
                         if($this->can_user)
-                        {
-                                $this->allMsg = $this->model->getMessages();
+                        {   
+                                $this->allEvents = $this->model->getEvent();
                         }
                         else
                         {
-                                $this->allMsg = $this->model->getMessages(null,$this->user->id);
+                                $this->allEvents = $this->model->getEvent(null,$this->user->id);
                         }
                         
                         

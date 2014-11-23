@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 						<div class="sfGrid-Col-10 col-centered">
 							<div class="sfGrids col-bordered">
 								<?php if(count($this->trademarkPending)): ?>
-								<table id="services">
+								<table id="sortTable">
 									<thead>
 										<tr>
 											<th>Registerd ID</th>

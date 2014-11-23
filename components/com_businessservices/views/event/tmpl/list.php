@@ -44,32 +44,32 @@ defined('_JEXEC') or die;
 				</div>
 			<?php endif; ?>
 			</div>
-			<!-- <pre><?php print_r($this->allMsg) ?></pre> -->
+			<!-- <pre><?php print_r($this->allEvents) ?></pre> -->
 			<div class="sfGrids">
 				<div class="sfGrid-Col-12">
 					<div class="sfGrids col-bordered">
-						<table id="sortTable">
+						<table id = "sortTable">
 							<thead>
 								<tr>
-									<th>Subject</th>
-									<th>Customer Name</th>
-									<th>Mail Id</th>
-									<th>Phone no</th>
+									<th>Title</th>
+									<th>For User</th>
+									<th>Description</th>
+									<th>Date</th>
 								</tr>
 							</thead>
 							<tbody>
-							<?php if(count($this->allMsg)): ?>
-							<?php foreach ($this->allMsg as $message): ?>
+							<?php if(count($this->allEvents)): ?>
+							<?php foreach ($this->allEvents as $event): ?>
 								<tr>
-									<td><?php echo $message->subject; ?></td>
-									<td><a  href='<?php echo JURI::root(false)."index.php/component/businessservices?view=message&Itemid=$message->recId" ?>'><?php echo $message->custname; ?></a></td>
-									<td><?php echo $message->mailid ?></td>
-									<td><?php echo $message->phoneno ?></td>
+									<td><a href="<?php echo jRoute::_("index.php?option=com_businessservices&view=event&Itemid=$event->id") ?>"><?php echo $event->title; ?></a></td>
+									<td><?php if($event->userId) echo JFactory::getUser($event->userId)->username; else echo "All Users" ?></td>
+									<td><?php echo $event->description ?></td>
+									<td><?php echo $event->date ?></td>
 								</tr>
 							<?php endforeach; ?>
 							<?php else: ?>
 								<tr>
-									<td><?php echo "No Messages History"; ?></td>
+									<td><?php echo "No Events History"; ?></td>
 								</tr>
 							<?php endif; ?>
 							</tbody>

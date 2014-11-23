@@ -32,30 +32,25 @@ defined('_JEXEC') or die;
 					<div class="sfGrids">
 						<div class="sfGrid-Col-10 col-centered">
 							<div class="sfGrids col-bordered">
-								<?php if(count($this->event)): ?>
+								<?php if(!isset($this->event[0]) || count($this->event[0])): ?>
 									<h3 class="title">Event Mangement</h3>
 									<div class="formContainer">
-									<form action="" method="POST" name="sfFormService[form]" enctype="multipart/form-data">
-										<label for="">Status</label>
-										<select name="sfFormService[status]" id="">
-										<?php foreach ($this->statuses as $key => $value): ?>
-											<option value="<?php echo $key; ?>" <?php echo ($key==$this->service['0']->status) ? 'selected' : ''; ?>><?php echo $value; ?></option>
-										<?php endforeach ?>
-										</select>
-										<label for="">Assign to</label>
-										<select name="sfFormService[assignedId]" id="">
-											<option value="0">Un Assigned</option>
-										<?php foreach ($this->admins as $value): ?>
-											<option value="<?php echo $value ?>" <?php echo ($value==$this->service['0']->assignedId) ? 'selected' : ''; ?> ><?php echo JFactory::getUser($value)->username ?></option>
+									<form action="" method="POST" name="sfForm[form]" enctype="multipart/form-data">
+										<label for="">For User</label>
+										<select name="sfFormEvent[userId]" id="">
+											<option value="0">All Users</option>
+										<?php foreach ($this->registered as $user): ?>
+											<option value="<?php echo $user->id;?>" <?php if(isset($this->event[0]) && $this->event[0]['userId']==$user->id) echo "selected"; ?>>
+												<?php echo $user->username ?>
+											</option>
 										<?php endforeach ?>
 											
 										</select>
-										<label for="">Due Date</label><input type="date" name="sfFormService[dueDate]" class="datepicker" value="<?php echo $this->service['0']->dueDate ?>">
-										<label for="">Comment</label>
-										<textarea name="sfFormService[comment]" id="" class="sfComment"><?php echo $this->service['0']->comment ?></textarea>
-										<label for="">Documents</label><input type="file" class="filevalidate" name="sfFormService[processDocs][]" id="processDocs">
+										<label for="">Event Date</label><input type="date" name="sfFormEvent[date]" class="datepicker" value="<?php if(isset($this->event[0])) echo $this->event[0]['date']; ?>">
+										<label for="">Title</label><input type="text" name="sfFormEvent[title]" value="<?php if(isset($this->event[0])) echo $this->event[0]['title']; ?>">
+										<label for="">Description</label>
+										<textarea name="sfFormEvent[description]" id="" class="sfDescription"><?php if(isset($this->event[0])) echo $this->event[0]['description']; ?></textarea>
 										<label for=""></label>
-										<input type="hidden" name="sfFormService[register_id]" value="<?php echo $this->service['0']->register_id ?>" id="register_id">
 										<input type="hidden" name="token" id="token">
 										<input type="hidden" name="action" id="action">
 										<input type="submit" value="Save">
@@ -75,4 +70,4 @@ defined('_JEXEC') or die;
 			</div>
 		</div>
 	</div>
-</div>-
+</div>

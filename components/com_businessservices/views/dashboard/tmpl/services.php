@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
 	// 	//print_r($this->trademarkPending);
  //    echo "</pre>";
 ?>
-<?php BusinessServicesHelpersHelper::dataSorts(); ?>
 <div class="sfContainer">
 	<div class="sfGrids">
 		<div class="sfGrid-Col-3">
@@ -34,7 +33,7 @@ defined('_JEXEC') or die;
 						<div class="sfGrid-Col-12 col-centered">
 							<div class="sfGrids col-bordered">
 								<?php if(count($this->trademarkPending)): ?>
-								<table id="services">
+								<table id="sortTable">
 									<thead>
 										<tr>
 											<th>Service ID</th>
@@ -56,7 +55,7 @@ defined('_JEXEC') or die;
 											<td><?php echo "$service->country_state"; ?></td>
 											<td><?php echo substr($service->date_created, 0, 10) ?></td>
 											<td class="<?php echo $service->status ?>"><?php echo $this->statuses[$service->status]; ?></td>
-											<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="View Record"> Edit </a></td>
+											<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="View Record" class="jmodedit"> Edit </a></td>
 											<td><a href="<?php echo jRoute::_("index.php?option=com_businessservices&task=del&Itemid=$service->register_id&msg=3") ?>" title="Delete Record"><div id="cross"></div></a></td>
 										</tr>
 										<?php } ?>

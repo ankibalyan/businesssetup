@@ -275,18 +275,18 @@ table.ui-datepicker-calendar tbody td.highlight > a {
 }
 .sorting_asc{
 	color: #ffaa33;
-	border-top: 15px solid #ffaa33;
+	border-top: 10px solid #ffaa33;
 	/* border-bottom: 10px solid transparent;*/
-	border-left: 15px solid transparent;
-	border-right: 15px solid transparent;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
 	content: ''
 }
 .sorting_desc{
 	color: #ffaa33;
 	/* border-top: 15px solid red; */
-	border-bottom: 15px solid #ffaa33;
-	border-left: 15px solid transparent;
-	border-right: 15px solid transparent;
+	border-bottom: 10px solid #ffaa33;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
 	content: ''
 }
 

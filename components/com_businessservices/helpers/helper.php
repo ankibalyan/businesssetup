@@ -44,18 +44,26 @@ class BusinessServicesHelpersHelper
         WHERE userId = $userId and 'delFlag' = 0";
         $db->setQuery($strQry);
         $result = $db->loadObjectList();
-        ?>
 
+        $strQry="SELECT * FROM #__client_company_events  
+        WHERE userId = $userId or userId = 0";
+        $db->setQuery($strQry);
+        $allevents = $db->loadObjectList();
+    ?>
         <script>
-		var events = [ 
+		var events = [
         <?php
         foreach ($result as $key => $value) { ?>
         	{ Title: "<?php echo $value->comment ?>", Date: new Date("<?php  $date = date_create($value->dueDate); echo date_format($date, 'm/d/Y'); ?>") }, 
+        <?php }
+        foreach ($allevents as $key => $value) { ?>
+            { Title: "<?php echo $value->description ?>", Date: new Date("<?php  $date = date_create($value->date); echo date_format($date, 'm/d/Y'); ?>") }, 
         <?php } ?>
+
         ];
         </script>
         <?php
-        return $result;
+//        return $result;
     }
 
     static function notify($value=null)

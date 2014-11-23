@@ -51,16 +51,21 @@ class BusinessServicesViewDashboard extends JViewLegacy
                 $input = $this->app->input;
                 $can_user = $this->user->authorise('core.edit', 'com_businessservices');
                 (!$can_user)? $this->app->redirect(JURI::root(false).'index.php/dashboard/my-account'):'';
+                BusinessServicesHelpersHelper::dataSorts();
                 $this->menu = array(
                 'user_home' => 'index.php/component/businessservices',
                 'profile' => 'index.php?view=profile&layout=edit&tmpl=component',
                 'Clients' => 'index.php/component/businessservices?layout=clients',
-                'services' => array(
+                'Services' => array(
                         'all' => 'index.php/component/businessservices?layout=services',
                         'pending' => 'index.php/component/businessservices?layout=pending',
                         'completed' => 'index.php/component/businessservices?layout=completed',
                         ),
-                'documents' => 'index.php/component/businessservices?layout=docs',
+                'Documents' => 'index.php/component/businessservices?layout=docs',
+                'Events' => array(
+                        'add_new' => 'index.php/component/businessservices?view=event',
+                        'all' => 'index.php/component/businessservices?view=event&layout=list',
+                        ),
                 'query_inbox' => 'index.php/component/businessservices?view=message&amp;list=all',
                 'raise_an_issue' => 'index.php/component/businessservices?view=message',
                  );

@@ -210,7 +210,6 @@ class BusinessServicesModelTrademark extends JModelItem
         jimport('joomla.user.user');
         $users = JAccess::getUsersByGroup(2); // in my project it was $self::REGISTERED_GROUP
         $array = array();
-
         foreach ($users as $key) {
             $array[$key] = JFactory::getUser($key);
         }

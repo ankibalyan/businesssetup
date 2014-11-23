@@ -39,15 +39,19 @@ defined('_JEXEC') or die;
 				</div>
 			<?php endif; ?>
 			</div>
-			<h3>All Documents</h3>
 			<div class="sfGrids">
 				<div class="sfGrid-Col-12">
 					<div class="sfGrids">
-						<div class="sfGrid-Col-10 col-centered">
+						<div class="sfGrid-Col-12 col-centered">
 							<div class="sfGrids col-bordered">
 								<?php if(count($this->trademarkPending)): ?>
 								<table>
 									<thead>
+										<tr>
+											<td colspan="3">
+												<h3>All Documents</h3>
+											</td>
+										</tr>
 										<tr>
 											<th>Service Name</th>
 											<th>Linked to</th>
@@ -121,6 +125,40 @@ defined('_JEXEC') or die;
 										<?php echo "You have no $this->status services"; ?>
 									</div>
 								</div>
+							<?php endif; ?>
+							<?php if($this->trademarkPending): ?>
+								<table>
+									<thead>
+										<tr>
+											<td colspan="3">
+												<h3>Documents Uploaded By Admins</h3>
+											</td>
+										</tr>
+										<tr>
+											<th>Service Name</th>
+											<th>Linked to</th>
+											<th>view / edit</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach ($this->allDocs as $service){ ?>
+											<tr>
+											<?php static $i =1; ?>
+												<td colspan="3">Service Id: <?php echo "$service->register_id"; ?>, Director: <?php echo $i++; ?></td>
+											</tr>
+										<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
+											<?php $adr = "client-docs/".JFactory::getUser($service->userId)->username.'/'.$service->director_photograph_file; ?>
+											<?php if (file_exists($adr)): ?>
+												<tr>
+													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
+													<td><?php echo "director photograph file"; ?></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+												</tr>
+											<?php endif; ?>
+										<?php endif; ?>
+										<?php } ?>
+									</tbody>
+								</table>
 							<?php endif; ?>
 							</div>
 						</div>
