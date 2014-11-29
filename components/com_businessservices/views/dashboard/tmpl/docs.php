@@ -14,6 +14,14 @@ defined('_JEXEC') or die;
  // echo "<pre>";
 	// print_r($this->links);	
  // echo "</pre>";
+		$document = JFactory::getDocument();
+         
+        //stylesheets
+        $document->addStylesheet(JURI::base().'components/com_businessservices/assets/css/jquery.treeview.css');
+         
+        //javascripts
+        $document->addScript(JURI::base().'components/com_businessservices/assets/js/jquery.treeview.js');
+        $document->addScript(JURI::base().'components/com_businessservices/assets/js/jquery.cookie.js');
 ?>
 <div class="sfContainer">
 	<div class="sfGrids">
@@ -168,3 +176,39 @@ defined('_JEXEC') or die;
 		</div>
 	</div>
 </div>
+<!-- <ul id="browser" class="filetree">
+<?php $i =1; ?>
+<pre>
+	<?php print_r($this->allDocs); ?>
+</pre>
+<?php foreach ($this->allDocs as $service){ ?>
+	<li><span class="folder">Service Id: <?php echo "$service->register_id"; ?></span>
+		<ul>
+			<li><span class="folder">Director: <?php echo $i++; ?></span>
+				<ul>
+					<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
+						<?php $adr = "client-docs/".JFactory::getUser($service->userId)->username.'/'.$service->director_photograph_file; ?>
+						<?php if (file_exists($adr)): ?>
+							<li><span class="file"><?php echo $this->service_name[$service->service_flag]; ?></span></li>
+						<?php endif; ?>
+					<?php endif; ?>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li><span class="folder">Service Id: <?php echo "$service->register_id"; ?></span>
+		<ul>
+			<li><span class="folder">Director: <?php echo $i++; ?></span>
+				<ul>
+					<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
+						<?php $adr = "client-docs/".JFactory::getUser($service->userId)->username.'/'.$service->director_photograph_file; ?>
+						<?php if (file_exists($adr)): ?>
+						<li><span class="file"><a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>"><?php echo $this->service_name[$service->service_flag]; ?></a></span></li>
+						<?php endif; ?>
+					<?php endif; ?>
+				</ul>
+			</li>
+		</ul>
+	</li>
+<?php } ?>
+</ul> -->

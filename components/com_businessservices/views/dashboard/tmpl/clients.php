@@ -32,6 +32,7 @@ defined('_JEXEC') or die;
 				<div class="sfGrid-Col-12">
 					<div class="sfGrids">
 						<div class="sfGrid-Col-12 col-centered">
+						<a href="<?php echo jURI::base().'index.php/component/businessservices/?do=genCsv&q='.$this->getLayout() ?>" class="csvData">Download Csv</a>
 							<div class="sfGrids col-bordered">
 								<?php if(count($this->registered)): ?>
 								<table id="sortTable">

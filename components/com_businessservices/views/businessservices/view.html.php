@@ -30,6 +30,7 @@ class BusinessServicesViewBusinessServices extends JViewLegacy
         protected $uri;
         protected $msg;
         protected $notify;
+        protected $trademark_m;
         /**
          * Display the Business Services view
          *
@@ -83,20 +84,34 @@ class BusinessServicesViewBusinessServices extends JViewLegacy
                 });
 
                 $BusinessServices_m = $this->getModel ( 'BusinessServices' );
-                $trademark_m = JModelLegacy::getInstance('Trademark', 'BusinessServicesModel');
+                $this->trademark_m = JModelLegacy::getInstance('Trademark', 'BusinessServicesModel');
                 if(isset($this->statuses[trim($this->getLayout())]))
                         {
                                $this->status = ucwords($this->statuses[trim($this->getLayout())]);
                                $this->setLayout('services');
                         }
-                $this->trademarkPending = $trademark_m->getServices(null,"$this->status",FALSE,FALSE);
-                $this->allDocs = $trademark_m->getDocs(FALSE);
+                if($input->getInt('Itemid') != NULL && $input->getInt('Itemid') != 0)
+                {
 
-                $this->profile = $trademark_m->get_profile_info();
+                        $useri = $this->trademark_m->getServiceUser($input->getInt('Itemid')); // get the user id of current item id
+                        $data = $this->app->input->post->get('sfFormService',null,null); 
+                        $file = $this->app->input->files->get('sfFormService'); 
+                        //die;
+                        $uploads = (count($data)) ? $this->trademark_m->upload($file['processDocs'],JFactory::getUser($useri)->username) : '' ;
+                        //die;
+                        $notify = (count($data)) ? $this->trademark_m->saveService($data) : '' ;
+                        ($notify) ? $this->notify = 2 : $this->notify = null;
+                        
+                        $this->service = $this->trademark_m->getServices($input->getInt('Itemid'),NULL,TRUE,TRUE);
+                }
+                $this->trademarkPending = $this->trademark_m->getServices(null,"$this->status",FALSE,FALSE);
+                $this->allDocs = $this->trademark_m->getDocs(FALSE);
+
+                $this->profile = $this->trademark_m->get_profile_info();
                 //echo "<pre>";print_r($this->profile);echo "</pre>";
-                $this->allTotal = $trademark_m->getServicesCount(null,$this->user->id)->total;
-                $this->pendingTotal = $trademark_m->getServicesCount("pending",$this->user->id)->total;
-                $this->completedTotal = $trademark_m->getServicesCount("completed",$this->user->id)->total;
+                $this->allTotal = $this->trademark_m->getServicesCount(null,$this->user->id)->total;
+                $this->pendingTotal = $this->trademark_m->getServicesCount("pending",$this->user->id)->total;
+                $this->completedTotal = $this->trademark_m->getServicesCount("completed",$this->user->id)->total;
                 $this->app = JFactory::getApplication();
 
                  if($input->getInt('msg') != NULL && $input->getInt('msg') != 0)

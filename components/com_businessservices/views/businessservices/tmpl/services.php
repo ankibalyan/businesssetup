@@ -41,6 +41,7 @@ defined('_JEXEC') or die;
 											<th>Service Name</th>
 											<th>Applied On</th>
 											<th>Status</th>
+											<th>Upload File</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -50,6 +51,7 @@ defined('_JEXEC') or die;
 											<td><a href="<?php echo $this->links[$service->service_flag];?>" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
 											<td><?php echo substr($service->date_created, 0, 10) ?></td>
 											<td class="<?php echo $service->status ?>"><?php echo $this->statuses[$service->status]; ?></td>
+											<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="View Record" class="jmodedit"> Upload </a></td>
 										</tr>
 										<?php } ?>
 									</tbody>

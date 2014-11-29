@@ -38,4 +38,5 @@ class BusinessServicesController extends JControllerLegacy
                 // call parent behavior
                 parent::display($cachable);
         }
+        
 }

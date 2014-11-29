@@ -134,7 +134,7 @@ class BusinessServicesModelTrademark extends JModelItem
         $strQry = "SELECT a.register_id, userId, assignedId, service_flag, status, recId, director_din_file,
          director_pancard_file, idproof_file, addressproof_file, director_photograph_file FROM #__client_company_registration as a 
         left outer join #__client_company_documents as b on a.register_id=b.register_id
-        left outer join #__bstrademarks as c on a.register_id = c.record_id 
+        left outer join #__bstrademarks as c on a.register_id = c.record_id
         WHERE a.register_id = b.register_id or a.register_id = c.record_id";
 
         $db->setQuery($strQry);
@@ -267,5 +267,109 @@ class BusinessServicesModelTrademark extends JModelItem
         return JFile::upload( $src, $dest );
         }
         }
+    }
+    public function genCsv($csvFrom,$Alluser = 1)
+        {
+            ($Alluser) ? $usercondition = "1" : $usercondition = "a.userId = '$this->userId'";
+            switch ($csvFrom) {
+                case 'services':
+                        $query ="SELECT 
+                                a.register_id AS 'Service Id',
+                                b.username AS 'User Name',
+                                a.country_state AS 'State',
+                                a.no_of_directors AS 'No of Directors',
+                                a.total_gov_fee AS 'Government Fee',
+                                a.total_price_fee AS 'Price Fee',
+                                a.status AS 'Status',
+                                a.comment AS 'Comment',
+                                a.date_created AS 'Registered On',
+                                a.dueDate As 'Due Date'
+                        FROM #__client_company_registration as a 
+                        left outer join #__users as b on a.userId = b.id 
+                        WHERE $usercondition";
+                    break;
+                case 'docs':
+                        $query ="";
+                    break;
+                case 'clients':
+                        $query ="SELECT 
+                            a.username AS 'User Name',
+                            a.email AS 'Email',
+                            a.registerDate AS 'Registeration Date',
+                            COUNT(b.register_id) AS 'Total Services'
+                        FROM
+                            #__users AS a
+                            left Outer join #__client_company_registration AS b  
+                            on a.id = b.userId
+                            group by a.id";
+                    break;
+                default:
+                        $query ="";
+                    break;
+            }
+            // echo "<pre>";
+            // print_r($csvData);
+            // echo "</pre>";
+            /*
+            // Using the function
+            $sql = "SELECT * FROM table";
+            // $db_conn should be a valid db handle
+            */
+            // output as an attachment
+            $this->query_to_csv($query,true, true);
+
+            // output to file system
+            //query_to_csv($db_conn, $sql, "test.csv", false);
+        }
+
+       public function query_to_csv($query = NULL, $attachment = false, $headers = true) {
+       $filename = "recorder_".time().".csv";
+        if($attachment) {
+            // send response headers to the browser
+            header( 'Content-Type: application/csv' );
+            header( 'Content-Disposition: attachment;filename='.$filename);
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            $fp = fopen('php://output', 'w');
+        } else {
+            $fp = fopen($filename, 'w');
+        }
+
+        $db = $this->getDbo();
+        $db->setQuery($query);
+
+        if($headers) {
+            // output header row (if at least one row exists)
+            $row = $db->loadAssoc();
+            if($row) {
+                fputcsv($fp, array_keys($row));
+            }
+        }
+        $results = $db->loadRowList();        
+        if(count($results))
+        {
+            foreach ($results as $key => $value) {
+                fputcsv($fp, $value);    
+            }
+        }
+        
+       /*
+        $result = mysql_query($query, $db_conn) or die( mysql_error( $db_conn ) );
+       
+        if($headers) {
+            // output header row (if at least one row exists)
+            $row = mysql_fetch_assoc($result);
+            if($row) {
+                fputcsv($fp, array_keys($row));
+                // reset pointer back to beginning
+                mysql_data_seek($result, 0);
+            }
+        }
+       */
+        // foreach ($data as $key => $value) {          
+        //  fputcsv($fp, $value);
+        // }
+       
+        fclose($fp);
     }
 }

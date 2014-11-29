@@ -102,7 +102,11 @@ class BusinessServicesViewDashboard extends JViewLegacy
                                $this->status = ucwords($this->statuses[trim($this->getLayout())]);
                                $this->setLayout('services');
                         }
-
+                if($input->get('do') =='genCsv' && $input->get('q'))
+                {
+                    $this->trademark_m->genCsv($input->get('q'),true);
+                    die;
+                }
                 if($input->getInt('Itemid') != NULL && $input->getInt('Itemid') != 0)
                 {
 

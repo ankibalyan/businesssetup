@@ -321,6 +321,9 @@ table.ui-datepicker-calendar tbody td.highlight > a {
   margin-top: -15%;
   width: 100%;
 }
-
+.csvData{
+	float: right;
+	margin-right: 10px;
+}
 
 /* customer Dashboard Ends */ 
