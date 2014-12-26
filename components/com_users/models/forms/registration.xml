@@ -4,12 +4,7 @@
 		label="COM_USERS_REGISTRATION_DEFAULT_LABEL"
 	>
 
-		<field name="spacer" type="spacer" class="text"
-				label="COM_USERS_REGISTER_REQUIRED"
-			/>
-
 		<field name="name" type="text"
-			description="COM_USERS_REGISTER_NAME_DESC"
 			filter="string"
 			label="COM_USERS_REGISTER_NAME_LABEL"
 			required="true"
@@ -18,7 +13,6 @@
 
 		<field name="username" type="text"
 			class="validate-username"
-			description="COM_USERS_DESIRED_USERNAME"
 			filter="username"
 			label="COM_USERS_REGISTER_USERNAME_LABEL"
 			message="COM_USERS_REGISTER_USERNAME_MESSAGE"
@@ -30,7 +24,6 @@
 		<field name="password1" type="password"
 			autocomplete="off"
 			class="validate-password"
-			description="COM_USERS_DESIRED_PASSWORD"
 			field="password1"
 			filter="raw"
 			label="COM_USERS_PROFILE_PASSWORD1_LABEL"
@@ -42,7 +35,6 @@
 		<field name="password2" type="password"
 			autocomplete="off"
 			class="validate-password"
-			description="COM_USERS_PROFILE_PASSWORD2_DESC"
 			field="password1"
 			filter="raw"
 			label="COM_USERS_PROFILE_PASSWORD2_LABEL"
@@ -53,7 +45,6 @@
 		/>
 
 		<field name="email1" type="email"
-			description="COM_USERS_REGISTER_EMAIL1_DESC"
 			field="id"
 			filter="string"
 			label="COM_USERS_REGISTER_EMAIL1_LABEL"
@@ -64,8 +55,7 @@
 			validate="email"
 		/>
 
-		<field name="email2" type="email"
-			description="COM_USERS_REGISTER_EMAIL2_DESC"
+<!-- 		<field name="email2" type="email"
 			field="email1"
 			filter="string"
 			label="COM_USERS_REGISTER_EMAIL2_LABEL"
@@ -74,7 +64,7 @@
 			size="30"
 			validate="equals"
 		/>
-
+ -->
 		<field
 			name="captcha"
 			type="captcha"

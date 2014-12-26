@@ -58,10 +58,13 @@ class Opc_servicesModelRegistrationforms extends JModelList {
     //die($strqry);
     $db->setQuery($strqry);
     if($db->query())
-      return true;
-        //die("Saved Successfully");
+    {
+      return $db->insertid();
+    }
     else
+    {
       return false;
+    }
   }
     // $strQry="SELECT register_id,country_state,no_of_directors,Registration_Pvt_Ltd_gov_fee,Registration_Pvt_Ltd_price,PAN_Application_gov_fee,PAN_Application_price, TAN_Application_gov_fee,
   //       TAN_Application_price,Business_Commencement_gov_fee,Business_Commencement_price,Service_Tax_Documents_gov_fee, Service_Tax_Documents_price,Shops_Establishments_gov_fee,
@@ -104,7 +107,7 @@ class Opc_servicesModelRegistrationforms extends JModelList {
     //                        //die($strqry);
     //                        $db->setQuery($strqry);
     //                        if($db->query())
-    //                          $app->Redirect('index.php/opc-service-flow?params=2');
+    //                          $app->Redirect("index.php/opc-service-flow?rid=$registerid&params=2");
     //                        else
     //                          $app->Redirect('index.php/service/incorporations/llp');
     //                      } else
@@ -119,7 +122,7 @@ class Opc_servicesModelRegistrationforms extends JModelList {
     //                          total_gov_fee ='$total_gov' ,total_price_fee='$total_price'  where userId=$userId and service_flag='$service_flag' and delFlag=0 "; 
     //                                //die($strqry); 
     //                                  $db->setQuery($strqry);
-    //                                  if($db->query()) {  $app->Redirect('index.php/opc-service-flow?params=2');
+    //                                  if($db->query()) {  $app->Redirect("index.php/opc-service-flow?rid=$registerid&params=2");
     //                                    } else
     //                                      $app->Redirect('index.php/service/incorporations/llp');
     //                          }                 
@@ -141,8 +144,10 @@ class Opc_servicesModelRegistrationforms extends JModelList {
              $lastname= str_ireplace("'" , "" ,$_POST["lastname"]);
              $contact=str_ireplace("'" , "" ,$_POST["contact"]);
              $mailid=str_ireplace("'" , "" ,$_POST["mailid"]);
+             $registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+              !($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
              if($fname==''||$lastname==''||$contact==''||$mailid=='' ) {
-              $app->Redirect($this->baseurl.'index.php/opc-service-flow?params=2', " Invalid Details , Please provide valid data ");
+              $app->Redirect($this->baseurl."index.php/opc-service-flow?rid=$registerid&params=2", " Invalid Details , Please provide valid data ");
              }
             // $slist=$_POST["slist"];
           //   $address=$_POST["address"];
@@ -150,7 +155,7 @@ class Opc_servicesModelRegistrationforms extends JModelList {
           //   $service_flag=2;
              
             $db = $this->getDbo(); 
-              $strQry1="select register_id from #__client_company_registration where userid=$userId and service_flag='$service_flag' and delFlag=0";
+              $strQry1="select register_id from #__client_company_registration where userid=$userId and register_id=$registerid and delFlag=0";
                     $query1 =$db->setQuery($strQry1);
                     $counts=$db->loadObject();
                     //print_r($counts);
@@ -177,7 +182,7 @@ class Opc_servicesModelRegistrationforms extends JModelList {
                         $Dircounts1=$db->loadObject();
                          $directorsCount=$Dircounts1->directorsCount;
                           if($directorsCount == 0){
-                            $app->Redirect( 'index.php/opc-service-flow?params=3' );
+                            $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=3" );
                           } else {
                           
                                 $strQry1="select recId from #__client_company_documents where register_id=$registerid";
@@ -185,14 +190,14 @@ class Opc_servicesModelRegistrationforms extends JModelList {
                                 $counts=$db->loadObject();
                                 $found=$counts->recId;
                                   if( $found ){
-                                    $app->Redirect( 'index.php/opc-service-flow?params=3' );
+                                    $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=3" );
                                   }
                                   else {
                                   $app->Redirect('index.php/');
                                   }
                           }
                 else:
-        $app->Redirect( 'index.php/opc-service-flow?params=2' );
+        $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=2" );
                 endif; 
              } else {
                   //,'$slist','$city','$address'  ,contact_country_state,city,address
@@ -200,9 +205,9 @@ class Opc_servicesModelRegistrationforms extends JModelList {
                           ($registerid,'$fname','$lastname',$contact,'$mailid')";
                           $db->setQuery($strQry);
                           if ($db->query()):
-                            $app->Redirect( 'index.php/opc-service-flow?params=3' );
+                            $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=3" );
                           else:
-                            $app->Redirect( 'index.php/opc-service-flow?params=2' , 'Could not save.');
+                            $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=2" , 'Could not save.');
                             endif; 
             }
 
@@ -393,7 +398,7 @@ class Opc_servicesModelRegistrationforms extends JModelList {
                         $Dircounts1=$db->loadObject();
                          $directorsCount=$Dircounts1->directorsCount;
                           if($directorsCount == 0){
-                            $app->Redirect( 'index.php/opc-service-flow?params=3' );
+                            $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=3" );
                           } else {
                           
                                 $strQry1="select recId from #__client_company_info where register_id=$registerid";
@@ -401,10 +406,10 @@ class Opc_servicesModelRegistrationforms extends JModelList {
                                 $counts=$db->loadObject();
                                 $found=$counts->recId;
                                   if( $found ){
-                                    $app->Redirect( 'index.php/opc-service-flow' );
+                                    $app->Redirect( "index.php/opc-service-flow?rid=$registerid" );
                                   }
                                   else {
-                                  $app->Redirect( 'index.php/opc-service-flow?params=4' );
+                                  $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=4" );
                                   }
                           }
                     
@@ -430,9 +435,9 @@ class Opc_servicesModelRegistrationforms extends JModelList {
     
                     
                     if($totalDir == $status)
-                        $app->Redirect( 'index.php/opc-service-flow?params=4' );  //echo "Successfully Saved";
+                        $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=4" );  //echo "Successfully Saved";
                      else
-                        $app->Redirect( 'index.php/opc-service-flow?params=3' );  //echo " Not Saved";  //  $app->Redirect('index.php?option=com_fileupload&view=fileuploadss&edit=4');      //$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');  
+                        $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=3" );  //echo " Not Saved";  //  $app->Redirect('index.php?option=com_fileupload&view=fileuploadss&edit=4');      //$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');  
                       die;
                       /* 
                       echo "Successfully Saved";
@@ -524,10 +529,10 @@ class Opc_servicesModelRegistrationforms extends JModelList {
                     //die($strqry);
                     $db->setQuery($strqry);
                     if($db->query())
-                      $app->Redirect('index.php/opc-service-flow' );
+                      $app->Redirect("index.php/opc-service-flow?rid=$registerid" );
                   //  $app->Redirect( 'index.php?option=com_fileupload&view=fileuploadss');
                     else
-                    $app->Redirect( 'index.php/opc-service-flow?params=4' );
+                    $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=4" );
                     echo "Failed" ;
                      }
                      else{
@@ -539,9 +544,9 @@ class Opc_servicesModelRegistrationforms extends JModelList {
                     //die($strqry);
                     $db->setQuery($strqry);
                     if($db->query())
-                    $app->Redirect( 'index.php/opc-service-flow' );
+                    $app->Redirect( "index.php/opc-service-flow?rid=$registerid" );
                     else
-                    $app->Redirect( 'index.php/opc-service-flow?params=4' );
+                    $app->Redirect( "index.php/opc-service-flow?rid=$registerid&params=4" );
                     echo "Failed" ;
                     }
             }

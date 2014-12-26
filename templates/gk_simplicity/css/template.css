@@ -2004,7 +2004,7 @@ span.poperror:after {
     box-shadow: 0px 0px 10px #44aaff;
     z-index:9999;
 	opacity: .99;
-    overflow:hidden;
+    overflow: auto;
 }
 #popuclose{
 	display: none;
@@ -2014,7 +2014,7 @@ span.poperror:after {
 	width: 15px;
 	background: none repeat scroll 0 0 #3388ff;
 	box-shadow: 2px 2px 5px #ff0000;
-	padding: 5px 10px;
+	padding: 5px 20px 5px 10px;
 	color: white;
 	border-radius: 20px;
 	z-index:999;
@@ -2076,17 +2076,18 @@ span.poperror:after {
 }
 #login_light{
     display: none;
-    position: fixed;
-    top: 9%;
+    position: absolute;
+    top: 8.5%;
     left: 11%;
 	width: 1030px;
-    padding: 10px;
+    padding: 0px 10px;
     border-radius: 20px 0 20px 0;
     background: #fff;
     border: 1px solid #44aaff;
     box-shadow: 0px 0px 10px #44aaff;
     z-index:9999;
 	opacity: .99;
+	background-attachment: scroll;
     /*overflow:hidden; */
 }
 #login_close {
@@ -2155,7 +2156,7 @@ z-index: 9999;
 .pRegistration .control-group .control-label{
 	width: 200px;
 	display: inline-block;
-	padding: 10px;
+	padding: 8px;
 }
 .pRegistration .control-group .controls{
 	padding: 5px;
@@ -2408,4 +2409,20 @@ table.ui-datepicker-calendar tbody td.highlight > a {
     background: url("images/ui-bg_inset-hard_55_ffeb80_1x100.png") repeat-x scroll 50% bottom #aaccff;
     color: #fff;
     border: 1px solid #FFDE2E;
+}
+
+.passworderror{
+	margin: -10px 0px 0px 0px !important;
+}
+#fb-auth{
+	display: none !important;
+}
+dl{ border: 0px solid blue; width: 500px;}
+dt{border: 0px solid green; width: 46%; display: inline-block;}
+dd{border: 0px solid red; width: 44%; display: inline-block;}
+dl input {
+	border:1px solid #0D67A3;
+	height: 40px;
+	margin: 5px 0px;
+	width: 220px;
 }

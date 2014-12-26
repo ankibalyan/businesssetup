@@ -42,7 +42,7 @@ class FileuploadModelFileuploadss extends JModelList {
 	 
 	 
 	 
-	  function getData($userId){
+	  function getData($userId= NULL, $register_id=NULL){
 	 $service_flag=1;
 	 	$db	= $this->getDbo();
 		$strQry="SELECT a.register_id,b.recId as dirdetails,c.recId as companyInfo,country_state,no_of_directors,Registration_Pvt_Ltd_gov_fee,Registration_Pvt_Ltd_price,PAN_Application_gov_fee,PAN_Application_price, TAN_Application_gov_fee,
@@ -57,8 +57,7 @@ class FileuploadModelFileuploadss extends JModelList {
 		left outer join awfrq_client_company_documents as b on a.register_id=b.register_id 
 		left outer join awfrq_client_company_info as c on a.register_id=c.register_id 
 		left outer join awfrq_client_contact_and_entity_info as d on a.register_id=d.register_id 
-		WHERE userId= $userId and  service_flag='$service_flag' and a.delFlag=0 ";
-
+		WHERE userId= $userId and a.register_id =$register_id and a.delFlag=0 ";
 		$db->setQuery($strQry);
 		$result = $db->loadObjectList();
         return $result;

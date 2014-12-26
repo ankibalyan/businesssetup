@@ -37,14 +37,15 @@ defined('_JEXEC') or die;
 								<table id="sortTable">
 									<thead>
 										<tr>
-											<th>Service ID</th>
-											<th>Username</th>
+											<th>Service No</th>
+											<th>User Name</th>
 											<th class="td-100">Service Name</th>
 											<th>State</th>
-											<th>Applied On</th>
+											<th>Date Applied</th>
 											<th>Status</th>
-											<th>Edit</th>
-											<th></th>
+											<th title="Download as File"><i class="fa fa-paperclip"></i></th>
+											<th title="Edit Service"><i class="fa fa-pencil-square-o"></i></th>
+											<th title="Delete Service"></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -52,11 +53,13 @@ defined('_JEXEC') or die;
 										<tr>
 											<td><?php echo "$service->register_id"; ?></td>
 											<td><?php echo JFactory::getUser($service->userId)->username; ?></td>
-											<td class="td-100"><a href="<?php echo $this->links[$service->service_flag];?>" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
+											<?php //echo $this->links[$service->service_flag].'?rid='.$service->register_id?>	
+											<td class="td-100"><a href="javascript:void()" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
 											<td><?php echo "$service->country_state"; ?></td>
 											<td><?php echo substr($service->date_created, 0, 10) ?></td>
 											<td class="<?php echo $service->status ?>"><?php echo $this->statuses[$service->status]; ?></td>
-											<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="View Record" class="jmodedit"> Edit </a></td>
+											<td><a href="<?php echo jURI::base().'index.php/component/businessservices/?do=genCsv&rid='.$service->register_id ?>" title="Download as File" class="csvData"><i class="fa fa-paperclip"></i></a></td>
+											<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="Edit Record" class="jmodedit"> <i class="fa fa-pencil-square-o"></i></a></td>
 											<td><a href="<?php echo jRoute::_("index.php?option=com_businessservices&task=del&Itemid=$service->register_id&msg=3") ?>" title="Delete Record"><div id="cross"></div></a></td>
 										</tr>
 										<?php } ?>

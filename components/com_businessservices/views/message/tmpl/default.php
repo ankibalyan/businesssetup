@@ -37,14 +37,16 @@ defined('_JEXEC') or die;
 			</div>
 			<div class="sfGrids">
 				<div class="sfGrid-Col-12">
-					<div class="sfGrids">
-						<div class="sfGrid-Col-10 formContainer">
+					<div class="sfGrids col-bordered">
+						<div class="sfGrid-Col-12 formContainer msgBox">
 						<?php if (!count($this->msg)): ?>
-							<form action="?view=message" method="post" class="sfContactForm" id="sfForm" name="sfform[form]">
+							<form action="?view=message" method="post" class="sfContactForm" id="sfMessageForm" name="sfform[form]">
 								<label for="sfForm[subject]">Subject</label>
-								<input type="text" class="charsonly" name="sfForm[subject]" id="subject">
+								<input type="text" class="charsonly required" name="sfForm[subject]" id="subject">
+								<span class="error_field"></span>
 								<label for="sfForm[message]">Message</label>
-								<textarea name="sfForm[message]" id="message" class = "TE"></textarea>
+								<textarea name="sfForm[message]" id="message" class = "TE required"></textarea>
+								<span class="error_field"></span>
 								<input type="hidden" name="sfForm[custname]" value="<?php echo $this->user->username; ?>" id="username">
 								<input type="hidden" name="sfForm[mailid]" value="<?php echo $this->user->email; ?>" id="email">
 								<input type="hidden" name="sfForm[uid]" value="<?php echo $this->user->id; ?>">
@@ -54,20 +56,29 @@ defined('_JEXEC') or die;
 							</form>
 						<?php else: ?>
 							<div class="messager">
-								<div><span>Email: </span><?php echo $this->msg['0']['mailid']; ?></div>
-								<div><span>Phone No: </span><?php echo $this->msg['0']['phoneno']; ?></div>
-								<div><span>Subject: </span><?php echo $this->msg['0']['subject']; ?></div>
+							<?php 
+							$this->can_user = $this->user->authorise('core.edit', 'com_businessservices');
+                				if($this->can_user):
+							 ?>
+								<div><label>Email: </label><?php echo $this->msg['0']['mailid']; ?></div>
+								<div><label>Phone No: </label><?php echo $this->msg['0']['phoneno']; ?></div>
+							<?php endif; ?>
+								<div><label>Subject: </label><?php echo $this->msg['0']['subject']; ?></div> <hr>
 								<?php foreach ($this->msg as $rec): ?>
-									<div class="messageHistory"><p><?php echo JFactory::getUser($rec['uid'])->username." : ".$rec['message']; ?></p></div>	
+									<div class="messageHistory"><?php echo $rec['message']."<label> Sent By: ". JFactory::getUser($rec['uid'])->name."</label>"; ?></div>	
 								<?php endforeach ?>
-								
 							</div>
-							<form action="?view=message&amp;Itemid=<?php echo $this->msg['0']['recId']; ?>" method="post" class="sfContactForm" id="sfForm" name="sfForm[form]">
-								<textarea name="sfForm[message]" id="message" class="TE"></textarea>
+							<form action="?view=message	&amp;Itemid=<?php echo $this->msg['0']['recId']; ?>" method="post" class="sfContactForm" id="sfReplyForm" name="sfForm[form]">
+								<textarea name="sfForm[message]" id="message" class="TE required"></textarea>
+								<span class="error_field"></span>
 								<input type="hidden" name="sfForm[uid]" value="<?php echo $this->user->id; ?>">
 								<input type="hidden" name="sfForm[replyId]" value="<?php echo $this->msg['0']['recId']; ?>">
 								<input type="hidden" name="token" id="token">
 								<input type="hidden" name="action" id="action">
+								<?php 
+									if($this->can_user): ?>
+										<input type="hidden" name="solved" id="solved" value="Solved">
+									<?php endif; ?>
 								<input type="submit" name="submit" id="submit" value="Reply">
 							</form>
 						<?php endif; ?>

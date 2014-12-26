@@ -5,10 +5,17 @@
 			label="PLG_USER_PROFILE_SLIDER_LABEL"
 		>
 			<field
+				name="phone"
+				type="text"
+				id="phone"
+				filter="string"
+				label="PLG_USER_PROFILE_FIELD_PHONE_LABEL"
+				size="30"
+			/>
+			<field
 				name="address1"
 				type="text"
 				id="address1"
-				description="PLG_USER_PROFILE_FIELD_ADDRESS1_DESC"
 				filter="string"
 				label="PLG_USER_PROFILE_FIELD_ADDRESS1_LABEL"
 				size="30"
@@ -18,7 +25,6 @@
 				name="address2"
 				type="text"
 				id="address2"
-				description="PLG_USER_PROFILE_FIELD_ADDRESS2_DESC"
 				filter="string"
 				label="PLG_USER_PROFILE_FIELD_ADDRESS2_LABEL"
 				size="30"
@@ -28,7 +34,6 @@
 				name="city"
 				type="text"
 				id="city"
-				description="PLG_USER_PROFILE_FIELD_CITY_DESC"
 				filter="string"
 				label="PLG_USER_PROFILE_FIELD_CITY_LABEL"
 				size="30"
@@ -38,7 +43,6 @@
 				name="region"
 				type="text"
 				id="region"
-				description="PLG_USER_PROFILE_FIELD_REGION_DESC"
 				filter="string"
 				label="PLG_USER_PROFILE_FIELD_REGION_LABEL"
 				size="30"
@@ -48,7 +52,6 @@
 				name="country"
 				type="text"
 				id="country"
-				description="PLG_USER_PROFILE_FIELD_COUNTRY_DESC"
 				filter="string"
 				label="PLG_USER_PROFILE_FIELD_COUNTRY_LABEL"
 				size="30"
@@ -58,19 +61,8 @@
 				name="postal_code"
 				type="text"
 				id="postal_code"
-				description="PLG_USER_PROFILE_FIELD_POSTAL_CODE_DESC"
 				filter="string"
 				label="PLG_USER_PROFILE_FIELD_POSTAL_CODE_LABEL"
-				size="30"
-			/>
-
-			<field
-				name="phone"
-				type="tel"
-				id="phone"
-				description="PLG_USER_PROFILE_FIELD_PHONE_DESC"
-				filter="string"
-				label="PLG_USER_PROFILE_FIELD_PHONE_LABEL"
 				size="30"
 			/>
 
@@ -78,7 +70,6 @@
 				name="website"
 				type="url"
 				id="website"
-				description="PLG_USER_PROFILE_FIELD_WEB_SITE_DESC"
 				filter="url"
 				label="PLG_USER_PROFILE_FIELD_WEB_SITE_LABEL"
 				size="30"
@@ -86,7 +77,6 @@
 			<field
 				name="favoritebook"
 				type="text"
-				description="PLG_USER_PROFILE_FIELD_FAVORITE_BOOK_DESC"
 				filter="string"
 				label="PLG_USER_PROFILE_FIELD_FAVORITE_BOOK_LABEL"
 				size="30"
@@ -94,7 +84,6 @@
 			<field
 				name="aboutme"
 				type="textarea"
-				description="PLG_USER_PROFILE_FIELD_ABOUT_ME_DESC"
 				label="PLG_USER_PROFILE_FIELD_ABOUT_ME_LABEL"
 				cols="30"
 				rows="5"
@@ -107,15 +96,13 @@
 				name="dob"
 				type="calendar"
 				label="PLG_USER_PROFILE_FIELD_DOB_LABEL"
-				description="PLG_USER_PROFILE_FIELD_DOB_DESC"
 				format="%Y-%m-%d"
 			/>
 			<field
 				name="tos"
 				type="tos"
 				default=""
-				label="PLG_USER_PROFILE_FIELD_TOS_LABEL"
-				description="PLG_USER_PROFILE_FIELD_TOS_DESC">
+				label="PLG_USER_PROFILE_FIELD_TOS_LABEL">
 				<option value="1">PLG_USER_PROFILE_OPTION_AGREE</option>
 				<option value="">JNO</option>
 			</field>

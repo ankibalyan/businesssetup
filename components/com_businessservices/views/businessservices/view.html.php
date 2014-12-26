@@ -44,16 +44,17 @@ class BusinessServicesViewBusinessServices extends JViewLegacy
                 $this->user = JFactory::getUser();
                 $this->app = JFactory::getApplication();
                 $input = $this->app->input;
+                $con = BusinessServicesHelpersHelper::countUserRecentMsgs();
                 $this->menu = array(
                 'user_home' => 'index.php/component/businessservices',
-                'profile' => 'index.php?view=profile&layout=edit&tmpl=component',
+                'profile' => 'index.php?option=com_users&view=profile&layout=edit&tmpl=component?',
                 'services' => array(
                         'all' => 'index.php/component/businessservices?layout=services',
                         'pending' => 'index.php/component/businessservices?layout=pending',
                         'completed' => 'index.php/component/businessservices?layout=completed',
                         ),
                 'documents' => 'index.php/component/businessservices?layout=docs',
-                'query_inbox' => 'index.php/component/businessservices?view=message&amp;list=all',
+                "query_inbox_($con)" => 'index.php/component/businessservices?view=message&amp;list=all',
                 'raise_an_issue' => 'index.php/component/businessservices?view=message',
                  );
                 $this->service_name  = array('0' => 'Any',
@@ -76,7 +77,7 @@ class BusinessServicesViewBusinessServices extends JViewLegacy
                                 '2' => 'llp_service/serviceflow',
                                 '3' => 'opc_services/serviceflow',
                                 '4' => 'publiclc/serviceflow',
-                                '4' => 'trademark/serviceflow',
+                                '5' => 'trademark/trademarkservices',
                     );
                 array_walk($this->links,function(&$value)
                 {
@@ -90,15 +91,16 @@ class BusinessServicesViewBusinessServices extends JViewLegacy
                                $this->status = ucwords($this->statuses[trim($this->getLayout())]);
                                $this->setLayout('services');
                         }
-                if($input->getInt('Itemid') != NULL && $input->getInt('Itemid') != 0)
+                if($input->getInt('Itemid') != NULL && $input->getInt('Itemid') != 0 && $this->getLayout() =='service' )
                 {
 
                         $useri = $this->trademark_m->getServiceUser($input->getInt('Itemid')); // get the user id of current item id
                         $data = $this->app->input->post->get('sfFormService',null,null); 
                         $file = $this->app->input->files->get('sfFormService'); 
                         //die;
-                        $uploads = (count($data)) ? $this->trademark_m->upload($file['processDocs'],JFactory::getUser($useri)->username) : '' ;
+                        $uploads = (($file['processDocs'][0]['size'])) ? $this->trademark_m->upload($file['processDocs'],JFactory::getUser($useri->userId)->username) : '' ;
                         //die;
+                        ($uploads)? $data['docId'] = $uploads : ''; 
                         $notify = (count($data)) ? $this->trademark_m->saveService($data) : '' ;
                         ($notify) ? $this->notify = 2 : $this->notify = null;
                         
@@ -112,12 +114,13 @@ class BusinessServicesViewBusinessServices extends JViewLegacy
                 $this->allTotal = $this->trademark_m->getServicesCount(null,$this->user->id)->total;
                 $this->pendingTotal = $this->trademark_m->getServicesCount("pending",$this->user->id)->total;
                 $this->completedTotal = $this->trademark_m->getServicesCount("completed",$this->user->id)->total;
-                $this->app = JFactory::getApplication();
 
                  if($input->getInt('msg') != NULL && $input->getInt('msg') != 0)
                 {
-                    (in_array($input->getInt('msg'), $this->msg)) ? $this->notify = $input->getInt('msg') : $this->notify = null;
+                    //(in_array($input->getInt('msg'), $this->msg)) ? $this->notify = $input->getInt('msg') : $this->notify = null;
+                    $this->notify = $input->getInt('msg');
                 }
+                
                 // Check for errors.
                 if (count($errors = $this->get('Errors'))) 
                 {

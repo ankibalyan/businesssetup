@@ -58,7 +58,7 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 		//die($strqry);
 		$db->setQuery($strqry);
 		if($db->query())
-			return true;
+			return $db->insertid();
 				//die("Saved Successfully");
 		else
 			return false;
@@ -104,7 +104,7 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 		// 												//die($strqry);
 		// 												$db->setQuery($strqry);
 		// 												if($db->query())
-		// 													$app->Redirect('index.php/llp-service-flow?params=2');
+		// 													$app->Redirect("index.php/llp-service-flow?rid=$registerid&params=2");
 		// 												else
 		// 													$app->Redirect('index.php/service/incorporations/llp');
 		// 											} else
@@ -119,7 +119,7 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 		// 													total_gov_fee ='$total_gov' ,total_price_fee='$total_price'  where userId=$userId and service_flag='$service_flag' and delFlag=0 "; 
 		// 																//die($strqry);	
 		// 																	$db->setQuery($strqry);
-		// 																	if($db->query()) {	$app->Redirect('index.php/llp-service-flow?params=2');
+		// 																	if($db->query()) {	$app->Redirect("index.php/llp-service-flow?rid=$registerid&params=2");
 		// 																		} else
 		// 																			$app->Redirect('index.php/service/incorporations/llp');
 		// 													}									
@@ -141,8 +141,11 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 						 $lastname= str_ireplace("'" , "" ,$_POST["lastname"]);
 						 $contact=str_ireplace("'" , "" ,$_POST["contact"]);
 						 $mailid=str_ireplace("'" , "" ,$_POST["mailid"]);
+						 $registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+						 	!($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
+
 						 if($fname==''||$lastname==''||$contact==''||$mailid=='' ) {
-						 	$app->Redirect($this->baseurl.'index.php/llp-service-flow?params=2', " Invalid Details , Please provide valid data ");
+						 	$app->Redirect($this->baseurl."index.php/llp-service-flow?rid=$registerid&params=2", " Invalid Details , Please provide valid data ");
 						 }
 						// $slist=$_POST["slist"];
 					//	 $address=$_POST["address"];
@@ -154,11 +157,6 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 										$query1	=$db->setQuery($strQry1);
 										$counts=$db->loadObject();
 										//print_r($counts);
-										if( ! $counts)
-											$app->Redirect('index.php/service/incorporations/login', 'Not Registered' );
-										 
-										 $registerid=$counts->register_id;
-										  
 										 $strQry1="select recId from awfrq_client_contact_and_entity_info where register_id=$registerid";
 										$query1	=$db->setQuery($strQry1);
 										$counts=$db->loadObject();
@@ -177,7 +175,7 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 												$Dircounts1=$db->loadObject();
 												 $directorsCount=$Dircounts1->directorsCount;
 													if($directorsCount == 0){
-														$app->Redirect( 'index.php/llp-service-flow?params=3' );
+														$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=3" );
 													} else {
 													
 																$strQry1="select recId from awfrq_client_company_documents where register_id=$registerid";
@@ -185,14 +183,14 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 																$counts=$db->loadObject();
 																$found=$counts->recId;
 																	if( $found ){
-																		$app->Redirect( 'index.php/llp-service-flow?params=3' );
+																		$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=3" );
 																	}
 																	else {
 																	$app->Redirect('index.php/');
 																	}
 													}
                 else:
-				$app->Redirect( 'index.php/llp-service-flow?params=2' );
+				$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=2" );
                 endif; 
 						 } else {
 									//,'$slist','$city','$address'  ,contact_country_state,city,address
@@ -200,9 +198,9 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 													($registerid,'$fname','$lastname',$contact,'$mailid')";
 													$db->setQuery($strQry);
 													if ($db->query()):
-														$app->Redirect( 'index.php/llp-service-flow?params=3' );
+														$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=3" );
 													else:
-														$app->Redirect( 'index.php/llp-service-flow?params=2' , 'Could not save.');
+														$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=2" , 'Could not save.');
 														endif; 
 						}
 
@@ -223,6 +221,8 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 			 $username=$user->get('username');
 			$JBASE = str_replace('\\','/', JPATH_BASE);
 			$ftppathclient = $JBASE . '/client-docs';
+			$registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+				!($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
 			if( ! is_dir($ftppathclient))
 			 mkdir($ftppathclient);
 			//$service_flag=2;
@@ -301,22 +301,18 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 		  
 		  
 		  
-										$db   = $this->getDbo();
-										$strQry1="select register_id , no_of_directors from awfrq_client_company_registration where userid=$userID and delFlag=0 and service_flag='$service_flag'";
-										$query1	=$db->setQuery($strQry1);
-										$counts=$db->loadObject();
-										$registerid=$counts->register_id;
-										$numdirectors=$counts->no_of_directors;
-										//print_r($counts);
-										if( ! $counts)
-											$app->Redirect('index.php/service/incorporations/private-limited-company', 'Not Registered' );
-										 
-				
-		  		 
-												$strqry_director1="select count(*) as directorsCount  from  awfrq_client_company_documents  where register_id=$registerid";
-												$query1=$db->setQuery($strqry_director1);
-												$Dircounts1=$db->loadObject();
-												 $directorsCount=$Dircounts1->directorsCount;
+		$db   = $this->getDbo();
+		$strQry1="select register_id , no_of_directors from awfrq_client_company_registration where userid=$userID and delFlag=0 and register_id=$registerid";
+		$query1	=$db->setQuery($strQry1);
+		$counts=$db->loadObject();
+		$registerid=$counts->register_id;
+		$numdirectors=$counts->no_of_directors;
+		//print_r($counts);
+
+				$strqry_director1="select count(*) as directorsCount  from  awfrq_client_company_documents  where register_id=$registerid";
+				$query1=$db->setQuery($strqry_director1);
+				$Dircounts1=$db->loadObject();
+				 $directorsCount=$Dircounts1->directorsCount;
 												 						
 	  if ( ! $_FILES["idprooffile".$i]["error"] > 0) {
 			if( ! file_exists($ftppath.'/'.$_FILES["idprooffile".$i]["name"]))
@@ -401,7 +397,7 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 												$Dircounts1=$db->loadObject();
 												 $directorsCount=$Dircounts1->directorsCount;
 													if($directorsCount == 0){
-														$app->Redirect( 'index.php/llp-service-flow?params=3' );
+														$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=3" );
 													} else {
 													
 																$strQry1="select recId from awfrq_client_company_info where register_id=$registerid";
@@ -409,10 +405,10 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 																$counts=$db->loadObject();
 																$found=$counts->recId;
 																	if( $found ){
-																		$app->Redirect( 'index.php/llp-service-flow' );
+																		$app->Redirect( "index.php/llp-service-flow?rid=$registerid" );
 																	}
 																	else {
-																	$app->Redirect( 'index.php/llp-service-flow?params=4' );
+																	$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=4" );
 																	}
 													}
 										
@@ -438,9 +434,9 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 		
 										
 										if($totalDir == $status)
-												$app->Redirect( 'index.php/llp-service-flow?params=4' );  //echo "Successfully Saved";
+												$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=4" );  //echo "Successfully Saved";
 										 else
-												$app->Redirect( 'index.php/llp-service-flow?params=3' );	//echo " Not Saved"; 	//	$app->Redirect('index.php?option=com_fileupload&view=fileuploadss&edit=4');			 //$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');	
+												$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=3" );	//echo " Not Saved"; 	//	$app->Redirect('index.php?option=com_fileupload&view=fileuploadss&edit=4');			 //$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');	
 											die;
 											/* 
 											echo "Successfully Saved";
@@ -475,7 +471,8 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 								$username =$user->username;
 						//		$service_flag=2;
 								$JBASE = str_replace('\\','/', JPATH_BASE);
-								
+								$registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+						 	!($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
 								
 			$JBASE = str_replace('\\','/', JPATH_BASE);
 			$ftppathclient = $JBASE . '/client-docs';
@@ -498,7 +495,7 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 										if( ! file_exists($ftppath.'/'.$_FILES["addressproof"]["name"]))
 												move_uploaded_file($_FILES["addressproof"]["tmp_name"],$ftppath.'/'.$_FILES["addressproof"]["name"]);
 										}
-										$strQry1="select register_id from awfrq_client_company_registration where userid=$userID  and service_flag='$service_flag' and delFlag=0";
+										$strQry1="select register_id from awfrq_client_company_registration where userid=$userID  and register_id=$registerid and delFlag=0";
 										$query1	=$db->setQuery($strQry1);
 										$counts=$db->loadObject();
 										//print_r($counts);
@@ -508,7 +505,7 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 										 $registerid=$counts->register_id;
 										 
 										 
-										 $strQry1="select recId from awfrq_client_company_info where register_id=$registerid";
+										$strQry1="select recId from awfrq_client_company_info where register_id=$registerid";
 										$query1	=$db->setQuery($strQry1);
 										$counts=$db->loadObject();
 										$found=$counts->recId;
@@ -532,10 +529,10 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 										//die($strqry);
 										$db->setQuery($strqry);
 										if($db->query())
-											$app->Redirect('index.php/llp-service-flow' );
+											$app->Redirect("index.php/llp-service-flow?rid=$registerid" );
 									//	$app->Redirect( 'index.php?option=com_fileupload&view=fileuploadss');
 										else
-										$app->Redirect( 'index.php/llp-service-flow?params=4' );
+										$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=4" );
 										echo "Failed" ;
 										 }
 										 else{
@@ -547,9 +544,9 @@ class Llp_serviceModelRregistrationforms extends JModelList {
 										//die($strqry);
 										$db->setQuery($strqry);
 										if($db->query())
-										$app->Redirect( 'index.php/llp-service-flow' );
+										$app->Redirect( "index.php/llp-service-flow?rid=$registerid" );
 										else
-										$app->Redirect( 'index.php/llp-service-flow?params=4' );
+										$app->Redirect( "index.php/llp-service-flow?rid=$registerid&params=4" );
 										echo "Failed" ;
 										}
 						}

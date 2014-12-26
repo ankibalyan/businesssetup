@@ -18,18 +18,24 @@
 		$app->Redirect( 'index.php/private-limited-company-login', 'Please login !!!' );
 		}				 
 		$serviceId=1; 
-		  $model = $this->getModel('Fileuploadss', 'FileuploadModel');
-		 $resList= $model->getData($userID);
-		 
+		if(!isset($_GET['rid'])) {
+          JFactory::getApplication()->enqueueMessage(JText::_('SOME_ERROR_OCCURRED'), 'error');
+          $registerId = (isset($_SERVER['HTTP_REFERER'])) ? header('Location: ' . $_SERVER['HTTP_REFERER']) : '';
+        }
+        else{
+          $registerId = $_GET['rid'];
+        }
+		 $model = $this->getModel('Fileuploadss', 'FileuploadModel');
+		 $resList= $model->getData($userID,$registerId);
 		/*   Service_Tax_Documents_gov_fee */
 		$editid=321;
 		if(isset($_GET["edit"])) {
 				
 				$editid=$_GET["edit"];
 		}
-		if(isset($_GET["param"])) {
+		if(isset($_GET["params"])) {
 				
-				$editid=$_GET["param"];
+				$editid=$_GET["params"];
 		}
 		 foreach ($resList as $list) :
 		 
@@ -45,15 +51,15 @@
 		  $same = "Directors and promotors are same ";
 		  if($dirdetails =='') $dirdetails='Director details';
 		  else
-		  $dirdetails='<a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;edit=3" > Director details  </a>';
+		  $dirdetails='<a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&rid='.$register_id.'&amp;edit=3" > Director details  </a>';
 		  
 		  if($companyInfo1 =='') $companyInfo='Company Info';
 		  else
-		  $companyInfo='<a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;edit=4" > Company Info </a>'; 
+		  $companyInfo='<a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&rid='.$register_id.'&amp;edit=4" > Company Info </a>'; 
 		  
 		  if($companyInfo1 =='') $summary='Summary';
 		  else
-		  $summary='<a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss" > Summary </a>'; 
+		  $summary='<a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&rid='.$register_id.'"> Summary </a>'; 
 
 		  $total_gov =$list->total_gov_fee;
 		  $total_price =$list->total_price_fee;
@@ -130,13 +136,13 @@ Private Limited Company</a>
 	</header>
 </article>
 		<div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;edit=2">Contact Info</a></center></div>
-<div id="step2"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;id=&amp;edit=3">Details of Directors</a></center></div>
-<div id="step3"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;edit=4" >Company Info</a></center></div>
+<div id="step1"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;rid=<?php echo $register_id ?>&amp;edit=2">Contact Info</a></center></div>
+<div id="step2"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;rid=<?php echo $register_id ?>&amp;id=&amp;edit=3">Details of Directors</a></center></div>
+<div id="step3"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;rid=<?php echo $register_id ?>&amp;edit=4" >Company Info</a></center></div>
 <div id="step4" class="ms-active"><center>&nbsp; Summary &nbsp;</center></div>
 <div id="step5"><center>Payment</center></div>
 </div>
-<!-- <div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&edit=1">edit </a>]</div> -->
+<!-- <div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&rid=<?php echo $register_id ?>&edit=1">edit </a>]</div> -->
 <br />
 									<div class="file-edit front-end-edit">
 												<div>
@@ -164,16 +170,13 @@ Private Limited Company</a>
 											<table>
 											<tr><td>
 											<div>
-												<h3 style="float:left">Contact Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&edit=2">edit </a>]</div>
+												<h3 style="float:left">Contact Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&rid=<?php echo $register_id ?>&edit=2">edit </a>]</div>
 												<div style="clear:both"></div>
 											<ul>
 											<li>First Name  : <?php echo $list->contact_first_name; ?> </li>
 											<li>Last Name : <?php echo $list->contact_last_name; ?> </li>
 											<li>Contact Number : <?php echo $list->contact_number; ?> </li>
 											<li>Mail ID :   <?php echo $list->mail_id; ?> </li>
-											<li>State  : <?php echo $list->contact_country_state; ?></li>
-											<li> City  : <?php echo $list->city; ?></li>
-											<li>Address  : <?php echo $list->address; ?> </li>
 											</ul>
 											
 											
@@ -181,7 +184,7 @@ Private Limited Company</a>
 											</td>
 											<td>
 												<div>
-											<h3 style="float:left">Company Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&edit=4">edit </a>]</div>
+											<h3 style="float:left">Company Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&rid=<?php echo $register_id ?>&edit=4">edit </a>]</div>
 												<div style="clear:both"></div>
 											<ul>
 											<li>1 .Desired Names of the Company</li>
@@ -215,7 +218,7 @@ Private Limited Company</a>
 										
 		 
 											<td><div>
-											<h3 style="float:left">Details of director <?php echo $dirNo; ?></h3><div style="float:left"> &nbsp;[<a  href="index.php/component/fileupload/fileuploadss?id=<?php echo$list1->recId;?>&edit=3">edit </a>]</div>
+											<h3 style="float:left">Details of director <?php echo $dirNo; ?></h3><div style="float:left"> &nbsp;[<a  href="index.php/component/fileupload/fileuploadss?rid=<?php echo $register_id ?>&id=<?php echo$list1->recId;?>&edit=3">edit </a>]</div>
 												<div style="clear:both"></div>
 											<ul>
 											<li>Name of Director : <?php echo $list1->director_name; ?> </li>
@@ -243,7 +246,7 @@ Private Limited Company</a>
 										
 												</tr>
 												<tr>
-												<td  align="right"> <form action="<?php echo JRoute::_("index.php?option=com_businessservices") ?>" method="POST"><input type="hidden" name="msg" value="1"><input type= "submit" value="Proceed" /></td></tr>
+												<td  align="right"> <form action="<?php echo JRoute::_("index.php?option=com_businessservices") ?>&rid=<?php echo $register_id; ?>" method="POST"><input type="hidden" name="msg" value="1"><input type= "submit" value="Proceed" /></td></tr>
 												</table>
 									</div>
 									
@@ -277,7 +280,7 @@ else  if($editid==2)  { ?>
 <div style="clear: both;"></div>
 
 <p><b>Contact Information</b></p>
-<form id="myform" action="index.php/index.php?option=com_fileupload&amp;view=file&edit=2" method="post">
+<form id="myform" action="index.php?option=com_fileupload&amp;view=file&amp;rid=<?php echo $register_id ?>&edit=2" method="post">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <table>
 <tbody>
@@ -292,65 +295,11 @@ else  if($editid==2)  { ?>
 <td><input id="contact" class="phone" style="width: 250px;" min-lenght="8" maxlength="10"  class="validatefield validatenumber" value="<?php echo $list->contact_number; ?>" name="contact" required="" type="text" /><span  class="error_field">Enter Contact Number</span></td>
 <td>Mail ID<span style="color:red;">*</span></td>
 <td><input id="mailid" class="validatefield validatemail" name="mailid" value="<?php echo $list->mail_id; ?>"  required="true" type="text" />(We wont spam you)<span  class="error_field">Enter valid Mail ID</span></td>
-</tr>
-<!-- <tr>
-<td>State<span style="color:red;">*</span></td>
-<td><select name="slist" id="slist">
-<option value="<?php echo $list->contact_country_state; ?>"> <?php echo $list->contact_country_state; ?></option>
-<option value="">Select a State</option>
-<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-<option value="Andhra Pradesh">Andhra Pradesh</option>
-<option value="Arunachal Pradesh">Arunachal Pradesh</option>
-<option value="Assam">Assam</option>
-<option value="Bihar">Bihar</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Chhattisgarh">Chhattisgarh</option>
-<option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
-<option value="Daman and Diu">Daman and Diu</option>
-<option value="Delhi">Delhi</option>
-<option value="Goa">Goa</option>
-<option value="Gujarat">Gujarat</option>
-<option value="Haryana">Haryana</option>
-<option value="Himachal Pradesh">Himachal Pradesh</option>
-<option value="Jammu and Kashmir">Jammu and Kashmir</option>
-<option value="Jharkhand">Jharkhand</option>
-<option value="Karnataka">Karnataka</option>
-<option value="Kerala">Kerala</option>
-<option value="Lakshadweep">Lakshadweep</option>
-<option value="Madhya Pradesh">Madhya Pradesh</option>
-<option value="Maharashtra">Maharashtra</option>
-<option value="Manipur">Manipur</option>
-<option value="Meghalaya">Meghalaya</option>
-<option value="Mizoram">Mizoram</option>
-<option value="Nagaland">Nagaland</option>
-<option value="Orissa">Orissa</option>
-<option value="Pondicherry">Pondicherry</option>
-<option value="Punjab">Punjab</option>
-<option value="Rajasthan">Rajasthan</option>
-<option value="Sikkim">Sikkim</option>
-<option value="Tamil Nadu">Tamil Nadu</option>
-<option value="Tripura">Tripura</option>
-<option value="Uttaranchal">Uttaranchal</option>
-<option value="Uttar Pradesh">Uttar Pradesh</option>
-<option value="West Bengal">West Bengal</option>
-</select><span  class="error_field">Select State</span>
-</td>
-<td>City<span style="color:red;">*</span></td>
-<td><input id="city" class="validatefield" name="city" type="text"  value="<?php echo $list->city; ?>"   required="required" /><span  class="error_field">Enter City</span></td>
-</tr>
-<tr>
-<td>Address<span style="color:red;">*</span></td>
-<td><input id="address" style="width: 250px;" name="address" class="validatefield"  value="<?php echo $list->address; ?>" required="required" type="text" /><span  class="error_field">Enter Address</span></td>
-<td></td> -->
-<tr>
 <td><input type="submit" value="Proceed " /></td>
 </tr>
 </tbody>
 </table>
 </form>
-		
-		
-		
 <?php 	} 
 else if($editid==3)
 {  
@@ -382,7 +331,7 @@ Private Limited Company</a>
 	</header>
 </article>
 <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;edit=2">Contact Info</a></center></div>
+<div id="step1"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&rid=<?php echo $register_id ?>&amp;edit=2">Contact Info</a></center></div>
 <div id="step2" class="ms-active" ><center>Details of Directors</center></div>
 <div id="step3" ><center><?php echo $companyInfo; ?></center></div>
 <div id="step4"><center><?php echo $summary; ?></center></div>
@@ -406,7 +355,7 @@ Private Limited Company</a>
 												//	if(isset($_GET["id"])){		index.php?option=com_fileupload&amp;view=file&edit=3&id=0
 				//$recId=$_GET["id"];
 												?>
-<form id="directordetails" action="index.php?option=com_fileupload&view=file&edit=3&id=0"  enctype="multipart/form-data" method="post" name="directordetails">
+<form id="directordetails" action="index.php?option=com_fileupload&view=file&rid=<?php echo $register_id ?>&edit=3&id=0"  enctype="multipart/form-data" method="post" name="directordetails">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <input type="hidden" id="totalDir" name="totalDir" value="<?php echo$totalDir; ?>" />
 <?php  $i=0; 
@@ -602,7 +551,7 @@ $i++ ;
 					} else {
 					
 					?>
-					<form id="directordetails" action="index.php?option=com_fileupload&amp;view=file&edit=3&id=0" enctype="multipart/form-data" method="post" name="directordetails">
+					<form id="directordetails" action="index.php?option=com_fileupload&amp;view=file&amp;rid=<?php echo $register_id ?>&edit=3&id=0" enctype="multipart/form-data" method="post" name="directordetails">
 					<input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <input type="hidden" id="totalDir" name="totalDir" value="<?php echo$totalDir; ?>" />
 <input type="hidden" id="fileupload" name="fileupload"  />
@@ -983,14 +932,14 @@ Private Limited Company</a>
 	</header>
 </article>
 <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&amp;edit=2">Contact Info</a></center></div>
-<div id="step2"><center><a class="ms-link"href="index.php/component/fileupload/fileuploadss?id=0&amp;edit=3">Details of Directors</a></center></div>
+<div id="step1"><center><a class="ms-link" href="index.php?option=com_fileupload&amp;view=fileuploadss&rid=<?php echo $register_id ?>&amp;edit=2">Contact Info</a></center></div>
+<div id="step2"><center><a class="ms-link"href="index.php/component/fileupload/fileuploadss?rid=<?php echo $register_id ?>&amp;edit=3">Details of Directors</a></center></div>
 <div id="step3"  class="ms-active"><center>Company Info</center></div>
 <div id="step4"><center><?php echo$summary; ?></center></div>
 <div id="step5"><center>Payment</center></div>
 </div>
 <div style="clear: both;"></div>
-<form id="companyInfoForm" action="index.php/index.php?option=com_fileupload&amp;view=file&edit=4" enctype="multipart/form-data" method="post" name="companyInfoForm">
+<form id="companyInfoForm" action="index.php/index.php?option=com_fileupload&amp;view=file&rid=<?php echo $register_id; ?>&edit=4" enctype="multipart/form-data" method="post" name="companyInfoForm">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <h3>Company Information</h3>
 <br /><b style="margin-right: 10px;">1 .Desired Names of the Company</b>

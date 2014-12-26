@@ -108,6 +108,7 @@ class BusinessServicesModelMessage extends JModelItem
                 {
                         $dt->$key = $value;
                 }
+                if(isset($dt->replyId) && $dt->replyId !='') self::saveClick($dt->replyId,FALSE);
                 // foreach ($data as $key => $value)
                 // {
                 //         $data[$key] = "'".$value."'";
@@ -134,5 +135,18 @@ class BusinessServicesModelMessage extends JModelItem
         public function getItems() {
             $items = parent::getItems();
             return $items;
+        }
+
+        public function saveClick($id=NULL, $status = TRUE)
+        {
+            if($id)
+            {
+                $dt = new stdClass();
+                $dt->recId = $id;
+                $dt->clicked = $status;
+                $db = JFactory::getDBO();          
+                $query = $db->getQuery(true);
+                return $result = JFactory::getDbo()->updateObject('#__client_advice_contact', $dt,'recId');
+            }
         }
 }

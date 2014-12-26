@@ -49,6 +49,7 @@ $tpl = new GKTemplate($this, $GK_TEMPLATE_MODULE_STYLES, true);
 	<?php if($option == 'com_virtuemart' && ($view == 'productdetails' || $view == 'manufacturer')) : ?>
 	<link rel="stylesheet" href="<?php echo JURI::base(); ?>templates/<?php echo $this->template; ?>/css/vmframe.css" type="text/css" />
 	<?php endif; ?>
+	<link rel="stylesheet" href="<?php echo JURI::base(); ?>templates/<?php echo $this->template; ?>/css/template.css" type="text/css" />
 </head>
 <body class="contentpane">
 	<?php if($print != 1) : ?>

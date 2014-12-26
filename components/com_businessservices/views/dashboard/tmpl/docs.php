@@ -68,17 +68,17 @@ defined('_JEXEC') or die;
 									</thead>
 									<tbody>
 										<?php foreach ($this->allDocs as $service){ ?>
-											<tr>
+											<!-- <tr>
 											<?php static $i =1; ?>
-												<td colspan="3">Service Id: <?php echo "$service->register_id"; ?>, Director: <?php echo $i++; ?></td>
-											</tr>
+												<td colspan="3">Service No: <?php echo "$service->register_id"; ?>, Director: <?php echo $i++; ?></td>
+											</tr> -->
 										<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
 											<?php $adr = "client-docs/".JFactory::getUser($service->userId)->username.'/'.$service->director_photograph_file; ?>
 											<?php if (file_exists($adr)): ?>
 												<tr>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director photograph file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php endif; ?>
@@ -88,7 +88,7 @@ defined('_JEXEC') or die;
 												<tr>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director din file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php endif; ?>
@@ -98,7 +98,7 @@ defined('_JEXEC') or die;
 												<tr>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director Id Proof file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php endif; ?>
@@ -109,7 +109,7 @@ defined('_JEXEC') or die;
 
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director Address Proof"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php endif; ?>
@@ -119,7 +119,7 @@ defined('_JEXEC') or die;
 												<tr>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "Pancard File"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php endif; ?>
@@ -138,31 +138,22 @@ defined('_JEXEC') or die;
 								<table>
 									<thead>
 										<tr>
-											<td colspan="3">
-												<h3>Documents Uploaded By Admins</h3>
+											<td colspan="2">
+												<h3>Documents Uploaded To / By Admins</h3>
 											</td>
 										</tr>
 										<tr>
-											<th>Service Name</th>
-											<th>Linked to</th>
-											<th>view / edit</th>
+											<th colspan="2">Files</th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach ($this->allDocs as $service){ ?>
-											<tr>
-											<?php static $i =1; ?>
-												<td colspan="3">Service Id: <?php echo "$service->register_id"; ?>, Director: <?php echo $i++; ?></td>
-											</tr>
-										<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
-											<?php $adr = "client-docs/".JFactory::getUser($service->userId)->username.'/'.$service->director_photograph_file; ?>
-											<?php if (file_exists($adr)): ?>
+										<?php foreach ($this->trademarkPending as $service){ ?>
+										<?php if(isset($service->docId ) && $service->docId != '' ): ?>
+											<?php 	$file = $this->trademark_m->getFile($service->docId); ?>
 												<tr>
-													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
-													<td><?php echo "director photograph file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td >Service No: <?php echo "$service->register_id"; ?></td>
+													<td ><a href="<?php echo $file->url ?>"><?php echo $file->name ?></a></td>
 												</tr>
-											<?php endif; ?>
 										<?php endif; ?>
 										<?php } ?>
 									</tbody>
@@ -182,7 +173,7 @@ defined('_JEXEC') or die;
 	<?php print_r($this->allDocs); ?>
 </pre>
 <?php foreach ($this->allDocs as $service){ ?>
-	<li><span class="folder">Service Id: <?php echo "$service->register_id"; ?></span>
+	<li><span class="folder">Service No: <?php echo "$service->register_id"; ?></span>
 		<ul>
 			<li><span class="folder">Director: <?php echo $i++; ?></span>
 				<ul>
@@ -196,14 +187,14 @@ defined('_JEXEC') or die;
 			</li>
 		</ul>
 	</li>
-	<li><span class="folder">Service Id: <?php echo "$service->register_id"; ?></span>
+	<li><span class="folder">Service No: <?php echo "$service->register_id"; ?></span>
 		<ul>
 			<li><span class="folder">Director: <?php echo $i++; ?></span>
 				<ul>
 					<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
 						<?php $adr = "client-docs/".JFactory::getUser($service->userId)->username.'/'.$service->director_photograph_file; ?>
 						<?php if (file_exists($adr)): ?>
-						<li><span class="file"><a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>"><?php echo $this->service_name[$service->service_flag]; ?></a></span></li>
+						<li><span class="file"><a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>"><?php echo $this->service_name[$service->service_flag]; ?></a></span></li>
 						<?php endif; ?>
 					<?php endif; ?>
 				</ul>

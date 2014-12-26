@@ -52,9 +52,10 @@ class BusinessServicesViewDashboard extends JViewLegacy
                 $can_user = $this->user->authorise('core.edit', 'com_businessservices');
                 (!$can_user)? $this->app->redirect(JURI::root(false).'index.php/dashboard/my-account'):'';
                 BusinessServicesHelpersHelper::dataSorts();
+                $con = BusinessServicesHelpersHelper::countAdminRecentMsgs();
                 $this->menu = array(
                 'user_home' => 'index.php/component/businessservices',
-                'profile' => 'index.php?view=profile&layout=edit&tmpl=component',
+                'profile' => 'index.php?option=com_users&view=profile&layout=edit&tmpl=component?',
                 'Clients' => 'index.php/component/businessservices?layout=clients',
                 'Services' => array(
                         'all' => 'index.php/component/businessservices?layout=services',
@@ -66,7 +67,7 @@ class BusinessServicesViewDashboard extends JViewLegacy
                         'add_new' => 'index.php/component/businessservices?view=event',
                         'all' => 'index.php/component/businessservices?view=event&layout=list',
                         ),
-                'query_inbox' => 'index.php/component/businessservices?view=message&amp;list=all',
+                "query_inbox_($con)" => 'index.php/component/businessservices?view=message&amp;list=all',
                 'raise_an_issue' => 'index.php/component/businessservices?view=message',
                  );
                 $this->service_name  = array('0' => 'Any',
@@ -107,6 +108,11 @@ class BusinessServicesViewDashboard extends JViewLegacy
                     $this->trademark_m->genCsv($input->get('q'),true);
                     die;
                 }
+                elseif($input->get('do') =='genCsv' && $input->get('rid'))
+                {
+                    $this->trademark_m->genCsv($input->get('rid'),true);
+                    die;
+                }
                 if($input->getInt('Itemid') != NULL && $input->getInt('Itemid') != 0)
                 {
 
@@ -114,8 +120,9 @@ class BusinessServicesViewDashboard extends JViewLegacy
                         $data = $this->app->input->post->get('sfFormService',null,null); 
                         $file = $this->app->input->files->get('sfFormService'); 
                         //die;
-                        $uploads = (count($data)) ? $this->trademark_m->upload($file['processDocs'],JFactory::getUser($useri)->username) : '' ;
+                        $uploads = (($file['processDocs'][0]['size'])) ? $this->trademark_m->upload($file['processDocs'],JFactory::getUser($useri->userId)->username) : '' ;
                         //die;
+                        ($uploads)? $data['docId'] = $uploads : ''; 
                         $notify = (count($data)) ? $this->trademark_m->saveService($data) : '' ;
                         ($notify) ? $this->notify = 2 : $this->notify = null;
                         

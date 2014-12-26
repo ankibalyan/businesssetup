@@ -45,15 +45,15 @@
           $same = "Directors and promotors are same ";
           if($trademark_id =='') $trademark_id='Trademark &amp; Copyright';
           else
-          $trademark_id='<a class="ms-link" href="'.$this->baseurl.'/index.php/trademark-services?params=3" > Trademark &amp; Copyright  </a>';
+          $trademark_id='<a class="ms-link" href="'.$this->baseurl.'/index.php/trademark-services?rid='.$$register_id.'&params=3" > Trademark &amp; Copyright  </a>';
           
           if($companyInfo1 =='') $companyInfo='Company Info';
           else
-          $companyInfo='<a class="ms-link" href="'.$this->baseurl.'/index.php/trademark-services?params=4" > Company Info </a>'; 
+          $companyInfo='<a class="ms-link" href="'.$this->baseurl.'/index.php/trademark-services?rid='.$$register_id.'&params=4" > Company Info </a>'; 
           
           if($companyInfo1 =='') $summary='Summary';
           else
-          $summary='<a class="ms-link" href="'.$this->baseurl.'/index.php/trademark-services"> Summary </a>'; 
+          $summary='<a class="ms-link" href="'.$this->baseurl.'/index.php/trademark-servicesrid='.$$register_id.'"> Summary </a>'; 
 
           $total_gov =$list->total_gov_fee;
           $total_price =$list->total_price_fee;
@@ -130,9 +130,9 @@ Trademark and Copyrights</a>
     </header>
 </article>
         <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?params=2">Contact Info</a></center></div>
-<div id="step2"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?params=3">Trademark &amp; Copyright</a></center></div>
-<div id="step3"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?params=4" >Company Info</a></center></div>
+<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=2">Contact Info</a></center></div>
+<div id="step2"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=3">Trademark &amp; Copyright</a></center></div>
+<div id="step3"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=4" >Company Info</a></center></div>
 <div id="step4" class="ms-active"><center>&nbsp; Summary &nbsp;</center></div>
 <div id="step5"><center>Payment</center></div>
 </div>
@@ -163,16 +163,13 @@ Trademark and Copyrights</a>
                                             <table>
                                             <tr><td>
                                             <div>
-                                                <h3 style="float:left">Contact Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="<?php echo $this->baseurl ?>/index.php/trademark-services?params=2">edit </a>]</div>
+                                                <h3 style="float:left">Contact Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="<?php echo $this->baseurl ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=2">edit </a>]</div>
                                                 <div style="clear:both"></div>
                                             <ul>
                                             <li>First Name  : <?php echo $list->contact_first_name; ?> </li>
                                             <li>Last Name : <?php echo $list->contact_last_name; ?> </li>
                                             <li>Contact Number : <?php echo $list->contact_number; ?> </li>
                                             <li>Mail ID :   <?php echo $list->mail_id; ?> </li>
-                                            <li>State  : <?php echo $list->contact_country_state; ?></li>
-                                            <li> City  : <?php echo $list->city; ?></li>
-                                            <li>Address  : <?php echo $list->address; ?> </li>
                                             </ul>
                                             
                                             
@@ -180,7 +177,7 @@ Trademark and Copyrights</a>
                                             </td>
                                             <td>
                                                 <div>
-                                            <h3 style="float:left">Company Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="<?php echo $this->baseurl ?>/index.php/trademark-services?params=4">edit </a>]</div>
+                                            <h3 style="float:left">Company Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="<?php echo $this->baseurl ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=4">edit </a>]</div>
                                                 <div style="clear:both"></div>
                                             <ul>
                                             <li>1 .Desired Names of the Company</li>
@@ -277,7 +274,7 @@ else  if($editid==2)  { ?>
 <div style="clear: both;"></div>
 
 <p><b>Contact Information</b></p>
-<form id="myform" action="<?php echo $this->baseurl; ?>/index.php/component/trademark/trademarkforms" method="post">
+<form id="myform" action="<?php echo $this->baseurl; ?>/index.php/component/trademark/trademarkforms?rid=<?php echo $register_id ?>" method="post">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <table>
 <tbody>
@@ -371,13 +368,13 @@ Trademark &amp; Copyrights</a>
     </header>
 </article>
 <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?params=2">Contact Info</a></center></div>
+<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=2">Contact Info</a></center></div>
 <div id="step2" class="ms-active" >Trademark &amp; Copyright</div>
 <div id="step3" ><center><?php echo $companyInfo; ?></center></div>
 <div id="step4"><center><?php echo $summary; ?></center></div>
 <div id="step5"><center>Payment</center></div>
 </div>
-<form id="trademarkFrom" action="<?php echo $this->baseurl; ?>/index.php/component/trademark/trademarkforms" enctype="multipart/form-data" method="post" name="tmservice[trademarkFrom]">
+<form id="trademarkFrom" action="<?php echo $this->baseurl; ?>/index.php/component/trademark/trademarkforms?rid=<?php echo $register_id ?>" enctype="multipart/form-data" method="post" name="tmservice[trademarkFrom]">
 <div class="formContainer">
 	<div class="formHead">Trademark &amp; Copyright</div>
 	<div class="formLeft">
@@ -666,14 +663,14 @@ Trademark &amp; Copyright</a>
     </header>
 </article>
 <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?params=2">Contact Info</a></center></div>
-<div id="step2"><center><a class="ms-link"href="<?php echo $this->baseurl; ?>/index.php/trademark-services?params=3">Trademark &amp; Copyright</a></center></div>
+<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=2">Contact Info</a></center></div>
+<div id="step2"><center><a class="ms-link"href="<?php echo $this->baseurl; ?>/index.php/trademark-services?rid=<?php echo $register_id ?>&params=3">Trademark &amp; Copyright</a></center></div>
 <div id="step3"  class="ms-active"><center>Company Info</center></div>
 <div id="step4"><center><?php echo$summary; ?></center></div>
 <div id="step5"><center>Payment</center></div>
 </div>
 <div style="clear: both;"></div>
-<form id="companyInfoForm" action="<?php echo $this->baseurl; ?>/index.php/component/trademark/trademarkforms" enctype="multipart/form-data" method="post" name="companyInfoForm">
+<form id="companyInfoForm" action="<?php echo $this->baseurl; ?>/index.php/component/trademark/trademarkforms?rid=<?php echo $register_id ?>" enctype="multipart/form-data" method="post" name="companyInfoForm">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <h3>Company Information</h3>
 <br /><b style="margin-right: 10px;">1 .Desired Names of the Company</b>

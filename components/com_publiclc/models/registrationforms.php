@@ -58,7 +58,7 @@ class PubliclcModelRegistrationforms extends JModelList {
     //die($strqry);
     $db->setQuery($strqry);
     if($db->query())
-      return true;
+      return $db->insertid();
         //die("Saved Successfully");
     else
       return false;
@@ -141,6 +141,8 @@ class PubliclcModelRegistrationforms extends JModelList {
              $fname= str_ireplace("'" , "" ,$_POST["firstname"]);
              $lastname= str_ireplace("'" , "" ,$_POST["lastname"]);
              $contact=str_ireplace("'" , "" ,$_POST["contact"]);
+             $registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+              !($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
              $mailid=str_ireplace("'" , "" ,$_POST["mailid"]);
              if($fname==''||$lastname==''||$contact==''||$mailid=='' ) {
               $app->Redirect($this->baseurl.'index.php/public-limited-company-service-flow?params=2', " Invalid Details , Please provide valid data ");
@@ -151,7 +153,7 @@ class PubliclcModelRegistrationforms extends JModelList {
           //   $service_flag=2;
              
             $db = $this->getDbo(); 
-              $strQry1="select register_id from awfrq_client_company_registration where userid=$userId and service_flag='$service_flag' and delFlag=0";
+              $strQry1="select register_id from awfrq_client_company_registration where userid=$userId and register_id=$registerid and delFlag=0";
                     $query1 =$db->setQuery($strQry1);
                     $counts=$db->loadObject();
                     //print_r($counts);
@@ -178,7 +180,7 @@ class PubliclcModelRegistrationforms extends JModelList {
                         $Dircounts1=$db->loadObject();
                          $directorsCount=$Dircounts1->directorsCount;
                           if($directorsCount == 0){
-                            $app->Redirect( 'index.php/public-limited-company-service-flow?params=3' );
+                            $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=3" );
                           } else {
                           
                                 $strQry1="select recId from awfrq_client_company_documents where register_id=$registerid";
@@ -186,7 +188,7 @@ class PubliclcModelRegistrationforms extends JModelList {
                                 $counts=$db->loadObject();
                                 $found=$counts->recId;
                                   if( $found ){
-                                    $app->Redirect( 'index.php/public-limited-company-service-flow?params=3' );
+                                    $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=3" );
                                   }
                                   else {
                                   $app->Redirect('index.php/');
@@ -201,7 +203,7 @@ class PubliclcModelRegistrationforms extends JModelList {
                           ($registerid,'$fname','$lastname',$contact,'$mailid')";
                           $db->setQuery($strQry);
                           if ($db->query()):
-                            $app->Redirect( 'index.php/public-limited-company-service-flow?params=3' );
+                            $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=3" );
                           else:
                             $app->Redirect( 'index.php/public-limited-company-service-flow?params=2' , 'Could not save.');
                             endif; 
@@ -215,6 +217,9 @@ class PubliclcModelRegistrationforms extends JModelList {
       $user = JFactory::getUser();
       $userID=$user->get('id');
        $username=$user->get('username');
+       $registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+              !($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
+
       $JBASE = str_replace('\\','/', JPATH_BASE);
       $ftppathclient = $JBASE . '/client-docs';
       if( ! is_dir($ftppathclient))
@@ -225,6 +230,7 @@ class PubliclcModelRegistrationforms extends JModelList {
        mkdir($ftppath);
         
          $totalDir=$_POST["totalDir"];
+
          $status=0;
         /*  
          if(isset($_FILES["photograph1"]["name"]) || isset($_POST["fileupload"])){
@@ -233,6 +239,7 @@ class PubliclcModelRegistrationforms extends JModelList {
          echo 0;
          die;
          } */
+
     for($i=1; $i <= $totalDir; $i++){
       if(isset($_POST["directorname".$i])) $directorname =$_POST["directorname".$i];
       if(isset($_POST["directorAddress".$i])) $directorAddress =$_POST["directorAddress".$i];
@@ -287,19 +294,18 @@ class PubliclcModelRegistrationforms extends JModelList {
       }
     
                     $db   = $this->getDbo();
-                    $strQry1="select register_id , no_of_directors from awfrq_client_company_registration where userid=$userID and delFlag=0 and service_flag='$service_flag'";
+                    $strQry1="select register_id , no_of_directors from awfrq_client_company_registration where userid=$userID and delFlag=0 and register_id='$registerid'";
                     $query1 =$db->setQuery($strQry1);
                     $counts=$db->loadObject();
                     $registerid=$counts->register_id;
                     $numdirectors=$totalDir;
-                    //print_r($counts);
                     if( ! $counts)
                       $app->Redirect('index.php/service/incorporations/private-limited-company', 'Not Registered' );
                         $strqry_director1="select count(*) as directorsCount  from  awfrq_client_company_documents  where register_id=$registerid";
                         $query1=$db->setQuery($strqry_director1);
                         $Dircounts1=$db->loadObject();
                         $directorsCount=$totalDir;
-                                    
+
     if ( ! $_FILES["idprooffile".$i]["error"] > 0) {
       if( ! file_exists($ftppath.'/'.$_FILES["idprooffile".$i]["name"]))
           move_uploaded_file($_FILES["idprooffile".$i]["tmp_name"],$ftppath.'/'.$_FILES["idprooffile".$i]["name"]);
@@ -370,28 +376,30 @@ class PubliclcModelRegistrationforms extends JModelList {
                     $status ++;
                       endif; 
                 } else {
-                    if($directorsCount == $numdirectors){
+                    // if($directorsCount == $numdirectors){
                     
-                        $strqry_director1="select count(*) as directorsCount  from  awfrq_client_company_documents  where register_id=$registerid";
-                        $query1=$db->setQuery($strqry_director1);
-                        $Dircounts1=$db->loadObject();
-                         $directorsCount=$Dircounts1->directorsCount;
-                          if($directorsCount == 0){
-                            $app->Redirect( 'index.php/public-limited-company-service-flow?params=3' );
-                          } else {
+                    //     $strqry_director1="select count(*) as directorsCount  from  awfrq_client_company_documents  where register_id=$registerid";
+                    //     $query1=$db->setQuery($strqry_director1);
+                    //     $Dircounts1=$db->loadObject();
+                    //      echo $directorsCount=$Dircounts1->directorsCount;
+                    //      die;
+
+                    //       if($directorsCount == 0){
+                    //         $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=3" );
+                    //       } else {
                           
-                                $strQry1="select recId from awfrq_client_company_info where register_id=$registerid";
-                                $query1 =$db->setQuery($strQry1);
-                                $counts=$db->loadObject();
-                                $found=$counts->recId;
-                                  if( $found ){
-                                    $app->Redirect( 'index.php/public-limited-company-service-flow' );
-                                  }
-                                  else {
-                                  $app->Redirect( 'index.php/public-limited-company-service-flow?params=4' );
-                                  }
-                          }
-                    }
+                    //             $strQry1="select recId from awfrq_client_company_info where register_id=$registerid";
+                    //             $query1 =$db->setQuery($strQry1);
+                    //             $counts=$db->loadObject();
+                    //             $found=$counts->recId;
+                    //               if( $found ){
+                    //                 $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid" );
+                    //               }
+                    //               else {
+                    //               $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=4" );
+                    //               }
+                    //       }
+                    // }
       
                      $strQry="INSERT INTO awfrq_client_company_documents(register_id,director_name,director_address,director_mail_id,director_qualification,director_birthplace,
                     director_din_file,director_pancard_file,dir_idproof,idproof_file,dir_addressproof,addressproof_file,director_photograph_file,promoters_name,
@@ -400,15 +408,18 @@ class PubliclcModelRegistrationforms extends JModelList {
                   
                     $db->setQuery($strQry);
                     if ($db->query()):
-                    $status ++;
+                      $status ++;
                     endif; 
                   }
     
     }
                     if($totalDir == $status)
-                        $app->Redirect( 'index.php/public-limited-company-service-flow?params=4' );  //echo "Successfully Saved";
+                        {
+
+                        $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=4" );  //echo "Successfully Saved";
+                    }
                      else
-                        //$app->Redirect( 'index.php/public-limited-company-service-flow?params=3' );  //echo " Not Saved";  //  $app->Redirect('index.php?option=com_fileupload&view=fileuploadss&edit=4');      //$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');  
+                        
                       die();
                       /* 
                       echo "Successfully Saved";
@@ -443,7 +454,8 @@ class PubliclcModelRegistrationforms extends JModelList {
                 $username =$user->username;
             //    $service_flag=2;
                 $JBASE = str_replace('\\','/', JPATH_BASE);
-                
+                $registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+              !($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
                 
       $JBASE = str_replace('\\','/', JPATH_BASE);
       $ftppathclient = $JBASE . '/client-docs';
@@ -466,7 +478,7 @@ class PubliclcModelRegistrationforms extends JModelList {
                     if( ! file_exists($ftppath.'/'.$_FILES["addressproof"]["name"]))
                         move_uploaded_file($_FILES["addressproof"]["tmp_name"],$ftppath.'/'.$_FILES["addressproof"]["name"]);
                     }
-                    $strQry1="select register_id from awfrq_client_company_registration where userid=$userID  and service_flag='$service_flag' and delFlag=0";
+                    $strQry1="select register_id from awfrq_client_company_registration where userid=$userID  and register_id=$registerid and delFlag=0";
                     $query1 =$db->setQuery($strQry1);
                     $counts=$db->loadObject();
                     //print_r($counts);
@@ -500,10 +512,10 @@ class PubliclcModelRegistrationforms extends JModelList {
                     //die($strqry);
                     $db->setQuery($strqry);
                     if($db->query())
-                      $app->Redirect('index.php/public-limited-company-service-flow' );
+                      $app->Redirect("index.php/public-limited-company-service-flow?rid=$registerid" );
                   //  $app->Redirect( 'index.php?option=com_fileupload&view=fileuploadss');
                     else
-                    $app->Redirect( 'index.php/public-limited-company-service-flow?params=4' );
+                    $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=4" );
                     echo "Failed" ;
                      }
                      else{
@@ -515,9 +527,9 @@ class PubliclcModelRegistrationforms extends JModelList {
                     //die($strqry);
                     $db->setQuery($strqry);
                     if($db->query())
-                    $app->Redirect( 'index.php/public-limited-company-service-flow' );
+                    $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid" );
                     else
-                    $app->Redirect( 'index.php/public-limited-company-service-flow?params=4' );
+                    $app->Redirect( "index.php/public-limited-company-service-flow?rid=$registerid&params=4" );
                     echo "Failed" ;
                     }
             }

@@ -14,13 +14,18 @@
         $userID=$user->get('id');
         $username =$user->username;
         $app = JFactory::getApplication();
+        $registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+              !($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
+
         if ($user->id == 0) {
         $app->Redirect( 'index.php/private-limited-company-login', 'Please login !!!' );
         }                
         $serviceId=4;
           $model = $this->getModel('Serviceflow', 'PubliclcModel');
-         $resList= $model->getData($userID,$serviceId);
-        
+         $resList= $model->getData($userID,$registerid);
+        // echo "<pre>";
+        //   print_r($resList);
+        // echo "</pre>";
         /*   Service_Tax_Documents_gov_fee */
         $editid=321;
         if(isset($_GET["edit"])) {
@@ -31,6 +36,7 @@
                 
                 $editid=$_GET["params"];
         }
+
 
          foreach ($resList as $list) :
           $register_id =$list->register_id;
@@ -46,15 +52,15 @@
           $same = "Directors and promotors are same ";
           if($dirdetails =='') $dirdetails='Director details';
           else
-          $dirdetails='<a class="ms-link" href="'.$this->baseurl.'/index.php/public-limited-company-service-flow?params=3" > Director details  </a>';
+          $dirdetails='<a class="ms-link" href="'.$this->baseurl.'/index.php/public-limited-company-service-flow?rid='.$register_id.'&params=3" > Director details  </a>';
           
           if($companyInfo1 =='') $companyInfo='Company Info';
           else
-          $companyInfo='<a class="ms-link" href="'.$this->baseurl.'/index.php/public-limited-company-service-flow?params=4" > Company Info </a>'; 
+          $companyInfo='<a class="ms-link" href="'.$this->baseurl.'/index.php/public-limited-company-service-flow?rid='.$register_id.'&params=4" > Company Info </a>'; 
           
           if($companyInfo1 =='') $summary='Summary';
           else
-          $summary='<a class="ms-link" href="'.$this->baseurl.'/index.php/public-limited-company-service-flow"> Summary </a>'; 
+          $summary='<a class="ms-link" href="'.$this->baseurl.'/index.php/public-limited-company-service-flow?rid='.$register_id.'"> Summary </a>'; 
 
           $total_gov =$list->total_gov_fee;
           $total_price =$list->total_price_fee;
@@ -131,9 +137,9 @@ Public Limited Company</a>
     </header>
 </article>
         <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?params=2">Contact Info</a></center></div>
-<div id="step2"><center><a class="ms-link" href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?params=3">Details of Directors</a></center></div>
-<div id="step3"><center><a class="ms-link" href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?params=4" >Company Info</a></center></div>
+<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=2">Contact Info</a></center></div>
+<div id="step2"><center><a class="ms-link" href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=3">Details of Directors</a></center></div>
+<div id="step3"><center><a class="ms-link" href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=4" >Company Info</a></center></div>
 <div id="step4" class="ms-active"><center>&nbsp; Summary &nbsp;</center></div>
 <div id="step5"><center>Payment</center></div>
 </div>
@@ -164,16 +170,13 @@ Public Limited Company</a>
                                             <table>
                                             <tr><td>
                                             <div>
-                                                <h3 style="float:left">Contact Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&edit=2">edit </a>]</div>
+                                                <h3 style="float:left">Contact Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=2">edit </a>]</div>
                                                 <div style="clear:both"></div>
                                             <ul>
                                             <li>First Name  : <?php echo $list->contact_first_name; ?> </li>
                                             <li>Last Name : <?php echo $list->contact_last_name; ?> </li>
                                             <li>Contact Number : <?php echo $list->contact_number; ?> </li>
                                             <li>Mail ID :   <?php echo $list->mail_id; ?> </li>
-                                            <li>State  : <?php echo $list->contact_country_state; ?></li>
-                                            <li> City  : <?php echo $list->city; ?></li>
-                                            <li>Address  : <?php echo $list->address; ?> </li>
                                             </ul>
                                             
                                             
@@ -181,7 +184,7 @@ Public Limited Company</a>
                                             </td>
                                             <td>
                                                 <div>
-                                            <h3 style="float:left">Company Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="index.php?option=com_fileupload&view=fileuploadss&edit=4">edit </a>]</div>
+                                            <h3 style="float:left">Company Information</h3><div style="float:left"> &nbsp;&nbsp;[<a  href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=4">edit </a>]</div>
                                                 <div style="clear:both"></div>
                                             <ul>
                                             <li>1 .Desired Names of the Company</li>
@@ -215,7 +218,7 @@ Public Limited Company</a>
                                         
          
                                             <td><div>
-                                            <h3 style="float:left">Details of director <?php echo $dirNo; ?></h3><div style="float:left"> &nbsp;[<a  href="index.php/component/fileupload/fileuploadss?id=<?php echo$list1->recId;?>&edit=3">edit </a>]</div>
+                                            <h3 style="float:left">Details of director <?php echo $dirNo; ?></h3><div style="float:left"> &nbsp;[<a  href="<?php echo $this->baseurl ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=3">edit </a>]</div>
                                                 <div style="clear:both"></div>
                                             <ul>
                                             <li>Name of Director : <?php echo $list1->director_name; ?> </li>
@@ -278,7 +281,7 @@ else  if($editid==2)  { ?>
 <div style="clear: both;"></div>
 
 <p><b>Contact Information</b></p>
-<form id="myform" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms" method="post">
+<form id="myform" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms?rid=<?php echo $registerid ?>" method="post">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <table>
 <tbody>
@@ -389,7 +392,7 @@ Public Limited Company</a>
     </header>
 </article>
 <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/public-limited-company-service-flow?params=2">Contact Info</a></center></div>
+<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=2">Contact Info</a></center></div>
 <div id="step2" class="ms-active" ><center>Details of Directors</center></div>
 <div id="step3" ><center><?php echo $companyInfo; ?></center></div>
 <div id="step4"><center><?php echo $summary; ?></center></div>
@@ -414,9 +417,9 @@ Public Limited Company</a>
 <?php 
 $result= $model->getDirDataRecId($register_id); 
 if($result){  ?>
-<form id="directordetails" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms"  enctype="multipart/form-data" method="post" name="directordetails">
+<form id="directordetails" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms?rid=<?php echo $registerid ?>"  enctype="multipart/form-data" method="post" name="directordetails">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
-<input type="hidden" id="totalDir" name="totalDir" value="<?php echo$totalD; ?>" />
+<input type="hidden" id="totalDir" name="totalDir" value="<?php echo $totalD; ?>" />
 <?php  $i=0; 
 foreach ($result as $list1) {
   $i++ ;
@@ -630,7 +633,7 @@ if($i <= $totalDir):
 </div>        
 <!-- endforeach; -->
 <?php } else { ?>
-<form id="directordetails" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms" enctype="multipart/form-data" method="post" name="directordetails">
+<form id="directordetails" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms?rid=<?php echo $registerid ?>" enctype="multipart/form-data" method="post" name="directordetails">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <input type="hidden" id="totalDir" name="totalDir" value="<?php echo$totalD; ?>" />
 <input type="hidden" id="fileupload" name="fileupload"  />
@@ -839,7 +842,6 @@ if($i <= $totalDir):
 ?>
     <script src="http://malsup.github.com/jquery.form.js"></script>
 <script>
-var totalDir=jQuery("#totalD").val();
             function tabopen(tab){
             if(parseInt(tab) < parseInt(1))
             {
@@ -860,7 +862,7 @@ var totalDir=jQuery("#totalD").val();
             jQuery('#nextDir').click(function(event){
                 event.preventDefault();
                 var tabno = jQuery('.tabactive').attr('data-tabno');
-                
+                var totalDir=jQuery("#totalDir").val();
                 var next = parseInt(tabno,10)+parseInt(1,10);
                 var prev = parseInt(tabno,10)-parseInt(1,10);
                 tabopen(next);
@@ -886,7 +888,7 @@ var totalDir=jQuery("#totalD").val();
 
                 event.preventDefault();
                 var tabno = jQuery('.tabactive').attr('data-tabno');
-                var totalDir=jQuery("#totalD").val();
+                var totalDir=jQuery("#totalDir").val();
                 var next = parseInt(tabno,10)+parseInt(1,10);
                 var prev = parseInt(tabno,10)-parseInt(1,10);
                 tabopen(prev);  
@@ -1072,14 +1074,14 @@ Public Limited Company</a>
     </header>
 </article>
 <div class="mainsteps">
-<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/public-limited-company-service-flow?params=2">Contact Info</a></center></div>
-<div id="step2"><center><a class="ms-link"href="<?php echo $this->baseurl; ?>/index.php/public-limited-company-service-flow?params=3">Details of Directors</a></center></div>
+<div id="step1"><center><a class="ms-link" href="<?php echo $this->baseurl; ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=2">Contact Info</a></center></div>
+<div id="step2"><center><a class="ms-link"href="<?php echo $this->baseurl; ?>/index.php/public-limited-company-service-flow?rid=<?php echo $registerid ?>&params=3">Details of Directors</a></center></div>
 <div id="step3"  class="ms-active"><center>Company Info</center></div>
 <div id="step4"><center><?php echo$summary; ?></center></div>
 <div id="step5"><center>Payment</center></div>
 </div>
 <div style="clear: both;"></div>
-<form id="companyInfoForm" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms" enctype="multipart/form-data" method="post" name="companyInfoForm">
+<form id="companyInfoForm" action="<?php echo $this->baseurl; ?>/index.php/component/publiclc/registrationforms?rid=<?php echo $registerid ?>" enctype="multipart/form-data" method="post" name="companyInfoForm">
 <input type="hidden" id="serviceId" name="serviceId" value="<?php echo $serviceId; ?>" />
 <h3>Company Information</h3>
 <br /><b style="margin-right: 10px;">1 .Desired Names of the Company</b>

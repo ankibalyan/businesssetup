@@ -119,3 +119,25 @@
 2014-11-14T05:43:38+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
 2014-11-14T06:01:06+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
 2014-11-14T06:01:15+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-11-29T07:48:08+00:00	INFO	gmailfailure	Failed to authenticate: Result Unknown. Access Denied
+2014-11-30T15:33:06+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-11-30T22:07:21+00:00	INFO	gmailfailure	Failed to authenticate: Result Unknown. Access Denied
+2014-12-01T18:35:30+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-02T20:36:40+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-05T18:20:46+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-06T05:06:29+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T07:38:16+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T09:29:19+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:08:23+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:08:30+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:08:40+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:10:09+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:10:17+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:11:23+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:11:34+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:12:13+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T11:12:47+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-07T19:26:19+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied
+2014-12-21T05:18:04+00:00	INFO	gmailfailure	Failed to authenticate: Result Unknown. Access Denied
+2014-12-25T04:36:21+00:00	INFO	gmailfailure	Failed to authenticate: Result Unknown. Access Denied
+2014-12-25T17:15:31+00:00	INFO	gmailfailure	Failed to authenticate: Access Denied

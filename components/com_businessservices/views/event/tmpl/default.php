@@ -35,7 +35,7 @@ defined('_JEXEC') or die;
 								<?php if(!isset($this->event[0]) || count($this->event[0])): ?>
 									<h3 class="title">Event Mangement</h3>
 									<div class="formContainer">
-									<form action="" method="POST" name="sfForm[form]" enctype="multipart/form-data">
+									<form action="" method="POST" name="sfForm[form]" id="eventForm" enctype="multipart/form-data">
 										<label for="">For User</label>
 										<select name="sfFormEvent[userId]" id="">
 											<option value="0">All Users</option>
@@ -46,10 +46,13 @@ defined('_JEXEC') or die;
 										<?php endforeach ?>
 											
 										</select>
-										<label for="">Event Date</label><input type="date" name="sfFormEvent[date]" class="datepicker" value="<?php if(isset($this->event[0])) echo $this->event[0]['date']; ?>">
-										<label for="">Title</label><input type="text" name="sfFormEvent[title]" value="<?php if(isset($this->event[0])) echo $this->event[0]['title']; ?>">
+										<label for="">Event Date</label><input type="date" name="sfFormEvent[date]" id="eventDate" class="datepicker required" value="<?php if(isset($this->event[0])) echo $this->event[0]['date']; ?>">
+										<span class="error_field"></span>
+										<label for="">Title</label><input type="text" name="sfFormEvent[title]" id="eventTitle" class="required" value="<?php if(isset($this->event[0])) echo $this->event[0]['title']; ?>">
+										<span class="error_field"></span>
 										<label for="">Description</label>
-										<textarea name="sfFormEvent[description]" id="" class="sfDescription"><?php if(isset($this->event[0])) echo $this->event[0]['description']; ?></textarea>
+										<textarea name="sfFormEvent[description]" id="eventDesc" class="sfDescription required"><?php if(isset($this->event[0])) echo $this->event[0]['description']; ?></textarea>
+										<span class="error_field"></span>
 										<label for=""></label>
 										<input type="hidden" name="token" id="token">
 										<input type="hidden" name="action" id="action">

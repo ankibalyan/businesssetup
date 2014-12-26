@@ -58,7 +58,7 @@ class TrademarkModelTrademarkForms extends JModelList {
 		//die($strqry);
 		$db->setQuery($strqry);
 		if($db->query())
-			return true;
+			return $db->insertid();
 				//die("Saved Successfully");
 		else
 			return false;

@@ -39,6 +39,9 @@ class FileuploadModelFile extends JModelItem {
 			 $username=$user->get('username');
 			$JBASE = str_replace('\\','/', JPATH_BASE);
 			$ftppathclient = $JBASE . '/client-docs';
+			$registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+			 	!($registerid) ? $app->Redirect('index.php', 'Not Registered' ): '';
+
 			if( ! is_dir($ftppathclient))
 			 mkdir($ftppathclient);
 			
@@ -118,17 +121,15 @@ class FileuploadModelFile extends JModelItem {
 		  
 		  
 										$db   = $this->getDbo();
-										$strQry1="select register_id , no_of_directors from awfrq_client_company_registration where userid=$userID and delFlag=0 and service_flag='$service_flag'";
+										$strQry1="select register_id , no_of_directors from awfrq_client_company_registration where userid=$userID and delFlag=0 and register_id='$registerid'";
 										$query1	=$db->setQuery($strQry1);
 										$counts=$db->loadObject();
 										$registerid=$counts->register_id;
 										$numdirectors=$counts->no_of_directors;
 										//print_r($counts);
 										if( ! $counts)
-											$app->Redirect('index.php/service/incorporations/private-limited-company', 'Not Registered' );
+											$app->Redirect('index.php/', 'Not Registered' );
 										 
-				
-		  		 
 												$strqry_director1="select count(*) as directorsCount  from  awfrq_client_company_documents  where register_id=$registerid";
 												$query1=$db->setQuery($strqry_director1);
 												$Dircounts1=$db->loadObject();
@@ -214,7 +215,7 @@ class FileuploadModelFile extends JModelItem {
 												$Dircounts1=$db->loadObject();
 												 $directorsCount=$Dircounts1->directorsCount;
 													if($directorsCount == 0){
-														$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3', 'Updated Successfully');
+														$app->Redirect("index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3", 'Updated Successfully');
 													} else {
 													
 																$strQry1="select recId from awfrq_client_company_info where register_id=$registerid";
@@ -222,10 +223,10 @@ class FileuploadModelFile extends JModelItem {
 																$counts=$db->loadObject();
 																$found=$counts->recId;
 																	if( $found ){
-																		$app->Redirect('index.php?option=com_fileupload&view=fileuploadss', 'Updated Successfully' );
+																		$app->Redirect("index.php?option=com_fileupload&view=fileuploadss&rid=$registerid", 'Updated Successfully' );
 																	}
 																	else {
-																	$app->Redirect('index.php?option=com_fileupload&view=fileuploadss&param=4');
+																	$app->Redirect("index.php?option=com_fileupload&view=fileuploadss&rid=$registerid&params=4");
 																	}
 													}
 										
@@ -251,9 +252,9 @@ class FileuploadModelFile extends JModelItem {
 		
 										
 										if($totalDir == $status)
-												$app->Redirect('index.php?option=com_fileupload&view=fileuploadss&edit=4');  //echo "Successfully Saved";
+												$app->Redirect("index.php?option=com_fileupload&view=fileuploadss&rid=$registerid&edit=4");  //echo "Successfully Saved";
 										 else
-												$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');	//echo " Not Saved"; 	//	$app->Redirect('index.php?option=com_fileupload&view=fileuploadss&edit=4');			 //$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');	
+												$app->Redirect("index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3");	//echo " Not Saved"; 	//	$app->Redirect('index.php?option=com_fileupload&view=fileuploadss&rid=$registerid&edit=4');			 //$app->Redirect("index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3");	
 											die;
 	 
 	 }
@@ -263,8 +264,6 @@ class FileuploadModelFile extends JModelItem {
 	 
 	 
    function saveform1ContactInfo() {
-		
-		
 			$app = JFactory::getApplication();
 					$user = JFactory::getUser();
 					 $userId=$user->get('id');
@@ -275,8 +274,11 @@ class FileuploadModelFile extends JModelItem {
 						 $lastname= str_ireplace("'" , "" ,$_POST["lastname"]);
 						 $contact=str_ireplace("'" , "" ,$_POST["contact"]);
 						 $mailid=str_ireplace("'" , "" ,$_POST["mailid"]);
+						 $registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+						 !($registerid) ? $app->Redirect('index.php/service/incorporations/private-limited-company', 'Not Registered' ): '';
+
 						 if($fname==''||$lastname==''||$contact==''||$mailid=='' ) {
-								$app->Redirect('index.php/component/fileupload/fileuploadss?param=2' , " Invalid Details , Please provide valid data ");
+								$app->Redirect('index.php/component/fileupload/fileuploadss?params=2' , " Invalid Details , Please provide valid data ");
 						 }
 						// $slist=$_POST["slist"];
 					//	 $address=$_POST["address"];
@@ -288,10 +290,6 @@ class FileuploadModelFile extends JModelItem {
 										$query1	=$db->setQuery($strQry1);
 										$counts=$db->loadObject();
 										//print_r($counts);
-										if( ! $counts)
-											$app->Redirect('index.php/service/incorporations/private-limited-company', 'Not Registered' );
-										 
-										 $registerid=$counts->register_id;
 										  
 										 $strQry1="select recId from awfrq_client_contact_and_entity_info where register_id=$registerid";
 										$query1	=$db->setQuery($strQry1);
@@ -312,7 +310,7 @@ class FileuploadModelFile extends JModelItem {
 												$Dircounts1=$db->loadObject();
 												 $directorsCount=$Dircounts1->directorsCount;
 													if($directorsCount == 0){
-														$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');
+														$app->Redirect("index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3");
 													} else {
 													
 																$strQry1="select recId from awfrq_client_company_documents where register_id=$registerid";
@@ -320,16 +318,16 @@ class FileuploadModelFile extends JModelItem {
 																$counts=$db->loadObject();
 																$found=$counts->recId;
 																	if( $found ){
-																		$app->Redirect('index.php/component/fileupload/fileuploadss?id=0&edit=3' );
+																		$app->Redirect("index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3" );
 																	}
 																	else {
-																	$app->Redirect('index.php/pvt-f3');
+																	$app->Redirect('/index.php');
 																	}
 													}
-			$app->Redirect('index.php?option=com_fileupload&view=fileuploadss');
+			$app->Redirect("index.php?option=com_fileupload&view=fileuploadss&rid=$registerid");
 			        return 1;
                 else:
-				$app->Redirect( 'index.php/pvt-f1', 'Update failed' );
+				$app->Redirect( 'index.php', 'Update failed' );
                 endif; 
 						 } else {
 									//,'$slist','$city','$address'  ,contact_country_state,city,address
@@ -338,9 +336,9 @@ class FileuploadModelFile extends JModelItem {
 												
 													$db->setQuery($strQry);
 													if ($db->query()):
-														$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3' );
+														$app->Redirect("index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3" );
 													else:
-														$app->Redirect( 'index.php/component/fileupload/fileuploadss?param2', 'Could not save.' );
+														$app->Redirect( 'index.php/component/fileupload/fileuploadss?params2', 'Could not save.' );
 														endif; 
 						}
 
@@ -360,7 +358,8 @@ class FileuploadModelFile extends JModelItem {
 								$username =$user->username;
 								$service_flag=1;
 								$JBASE = str_replace('\\','/', JPATH_BASE);
-								
+			$registerid = (isset($_GET['rid'])) ? $_GET['rid'] : '';
+						 !($registerid) ? $app->Redirect('index.php/service/incorporations/private-limited-company', 'Not Registered' ): '';					
 								
 			$JBASE = str_replace('\\','/', JPATH_BASE);
 			$ftppathclient = $JBASE . '/client-docs';
@@ -383,7 +382,7 @@ class FileuploadModelFile extends JModelItem {
 										if( ! file_exists($ftppath.'/'.$_FILES["addressproof"]["name"]))
 												move_uploaded_file($_FILES["addressproof"]["tmp_name"],$ftppath.'/'.$_FILES["addressproof"]["name"]);
 										}
-										$strQry1="select register_id from awfrq_client_company_registration where userid=$userID  and service_flag='$service_flag' and delFlag=0";
+										$strQry1="select register_id from awfrq_client_company_registration where userid=$userID  and register_id='$registerid' and delFlag=0";
 										$query1	=$db->setQuery($strQry1);
 										$counts=$db->loadObject();
 										//print_r($counts);
@@ -417,8 +416,8 @@ class FileuploadModelFile extends JModelItem {
 										//die($strqry);
 										$db->setQuery($strqry);
 										if($db->query())
-											$app->Redirect('index.php?option=com_fileupload&view=fileuploadss' );
-									//	$app->Redirect( 'index.php?option=com_fileupload&view=fileuploadss');
+											$app->Redirect("index.php?option=com_fileupload&view=fileuploadss&rid=$registerid" );
+									//	$app->Redirect( "index.php?option=com_fileupload&view=fileuploadss&rid=$registerid");
 										else
 										echo "Failed" ;
 										 }
@@ -431,7 +430,7 @@ class FileuploadModelFile extends JModelItem {
 										//die($strqry);
 										$db->setQuery($strqry);
 										if($db->query())
-										$app->Redirect( 'index.php?option=com_fileupload&view=fileuploadss' );
+										$app->Redirect( "index.php?option=com_fileupload&view=fileuploadss&rid=$registerid" );
 										else
 										echo "Failed" ;
 										}
@@ -470,7 +469,7 @@ class FileuploadModelFile extends JModelItem {
 		//die($strqry);
 		$db->setQuery($strqry);
 		if($db->query())
-			return true;
+			return $db->insertid();
 				//die("Saved Successfully");
 		else
 			return false;
@@ -519,7 +518,7 @@ class FileuploadModelFile extends JModelItem {
 	// 														total_gov_fee ='$total_gov' ,total_price_fee='$total_price'  where userId=$userId "; 
 																			
 	// 																		// $db->setQuery($strqry);
-	// 																		// if($db->query()) {	$app->Redirect('index.php/component/fileupload/fileuploadss?param=2');
+	// 																		// if($db->query()) {	$app->Redirect('index.php/component/fileupload/fileuploadss?params=2');
 	// 																		// 	} else
 	// 																		// 		$app->Redirect('index.php/service/incorporations/private-limited-company');
 	// 														}									
@@ -538,7 +537,7 @@ class FileuploadModelFile extends JModelItem {
 	// 									//die($strqry);
 	// 									$db->setQuery($strqry);
 	// 									if($db->query())
-	// 									$app->Redirect('index.php/component/fileupload/fileuploadss?param=2');
+	// 									$app->Redirect('index.php/component/fileupload/fileuploadss?params=2');
 	// 									//die("Saved Successfully");
 	// 									else
 	// 									$app->Redirect('index.php/component/fileupload/fileuploadsform');
@@ -550,14 +549,14 @@ class FileuploadModelFile extends JModelItem {
 	// 									$found=$counts->recId;
 	// 											if( $found ){
 												
-	// 											$app->Redirect('index.php/component/fileupload/fileuploadss?edit=2');
+	// 											$app->Redirect('index.php/component/fileupload/fileuploadss?rid=$registerid&edit=2');
 												
 	// 											$strqry_director1="select count(*) as directorsCount  from  awfrq_client_company_documents  where register_id=$registerid";
 	// 											$query1=$db->setQuery($strqry_director1);
 	// 											$Dircounts1=$db->loadObject();
 	// 											 $directorsCount=$Dircounts1->directorsCount;
 	// 												if($directorsCount == 0){
-	// 													$app->Redirect('index.php/component/fileupload/fileuploadss?edit=3');
+	// 													$app->Redirect("index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3");
 	// 												} else {
 													
 	// 															$strQry1="select recId from awfrq_client_company_info where register_id=$registerid";
@@ -565,7 +564,7 @@ class FileuploadModelFile extends JModelItem {
 	// 															$counts=$db->loadObject();
 	// 															$found=$counts->recId;
 	// 																if( $found ){
-	// 																	$app->Redirect('index.php?option=com_fileupload&view=fileuploadss');
+	// 																	$app->Redirect("index.php?option=com_fileupload&view=fileuploadss&rid=$registerid");
 	// 																}
 	// 																else {
 	// 																$app->Redirect('index.php/pvt-f3');
@@ -574,7 +573,7 @@ class FileuploadModelFile extends JModelItem {
 
 												
 	// 											} else
-	// 												$app->Redirect('index.php/component/fileupload/fileuploadss?param=2');
+	// 												$app->Redirect('index.php/component/fileupload/fileuploadss?params=2');
 	// 									} else
 	// 												$app->Redirect('index.php/service/incorporations/private-limited-company');
 										
@@ -600,8 +599,8 @@ class FileuploadModelFile extends JModelItem {
         }
         $this->setState('file.id', $id);
 
-        // Load the parameters.
-        $params = $app->getParams();
+        // Load the paramseters.
+        $params = $app->getparams();
         $params_array = $params->toArray();
         if (isset($params_array['item_id'])) {
             $this->setState('file.id', $params_array['item_id']);
@@ -612,7 +611,7 @@ class FileuploadModelFile extends JModelItem {
     /**
      * Method to get an ojbect.
      *
-     * @param	integer	The id of the object to get.
+     * @params	integer	The id of the object to get.
      *
      * @return	mixed	Object on success, false on failure.
      */
@@ -660,7 +659,7 @@ class FileuploadModelFile extends JModelItem {
     /**
      * Method to check in an item.
      *
-     * @param	integer		The id of the row to check out.
+     * @params	integer		The id of the row to check out.
      * @return	boolean		True on success, false on failure.
      * @since	1.6
      */
@@ -688,7 +687,7 @@ class FileuploadModelFile extends JModelItem {
     /**
      * Method to check out an item for editing.
      *
-     * @param	integer		The id of the row to check out.
+     * @params	integer		The id of the row to check out.
      * @return	boolean		True on success, false on failure.
      * @since	1.6
      */

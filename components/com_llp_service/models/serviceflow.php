@@ -49,7 +49,7 @@ class Llp_serviceModelServiceflow extends JModelItem {
         FROM #__client_company_registration as a left outer join #__client_company_documents as b on a.register_id=b.register_id 
         left outer join #__client_company_info as c on a.register_id=c.register_id 
         left outer join #__client_contact_and_entity_info as d on a.register_id=d.register_id 
-        WHERE userId= 310 and service_flag='2' and delFlag=0";
+        WHERE userId= $userId and a.register_id = $serviceId and delFlag=0";
         
         //die($strQry);
         $db->setQuery($strQry);

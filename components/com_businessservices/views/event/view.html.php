@@ -34,6 +34,7 @@ class BusinessServicesViewEvent extends JViewLegacy
         protected $menu;
         protected $trademark_m;
         protected $registered;
+        protected $allEvents;
         public function __construct()
         {
                 parent::__construct();
@@ -42,9 +43,10 @@ class BusinessServicesViewEvent extends JViewLegacy
                 $this->can_user = $this->user->authorise('core.edit', 'com_businessservices');
                 if($this->can_user)
                 {
+                    $con = BusinessServicesHelpersHelper::countUserRecentMsgs();
                     $this->menu = array(
                     'user_home' => 'index.php/component/businessservices',
-                    'profile' => 'index.php?view=profile&layout=edit&tmpl=component',
+                    'profile' => 'index.php?option=com_users&view=profile&layout=edit&tmpl=component?',
                     'Clients' => 'index.php/component/businessservices?layout=clients',
                     'Services' => array(
                             'all' => 'index.php/component/businessservices?layout=services',
@@ -62,6 +64,7 @@ class BusinessServicesViewEvent extends JViewLegacy
                 }
                 else
                 {
+                        $con = BusinessServicesHelpersHelper::countUserRecentMsgs();
                         $this->menu = array(
                         'user_home' => 'index.php?option=com_businessservices',
                         'profile' => 'index.php?option=com_users&view=profile&layout=edit&tmpl=component',
@@ -71,7 +74,7 @@ class BusinessServicesViewEvent extends JViewLegacy
                         'completed' => 'index.php?option=com_businessservices&amp;layout=completed',
                                 ),
                         'documents' => 'index.php?option=com_businessservices&amp;layout=docs',
-                        'query_inbox' => 'index.php/component/businessservices?view=message&amp;list=all',
+                        "query_inbox_($con)" => 'index.php/component/businessservices?view=message&amp;list=all',
                         'raise_an_issue' => 'index.php/component/businessservices?view=message',
                          );
                 }

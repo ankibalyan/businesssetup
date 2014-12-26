@@ -48,7 +48,7 @@ class PubliclcModelServiceflow extends JModelItem {
         left outer join awfrq_client_company_documents as b on a.register_id=b.register_id 
         left outer join awfrq_client_company_info as c on a.register_id=c.register_id 
         left outer join awfrq_client_contact_and_entity_info as d on a.register_id=d.register_id 
-        WHERE userId= $userId and service_flag='$serviceId' and a.delFlag=0 ";
+        WHERE userId= $userId and a.register_id=$serviceId and a.delFlag=0 ";
 
         $db->setQuery($strQry);
         $result = $db->loadObjectList();

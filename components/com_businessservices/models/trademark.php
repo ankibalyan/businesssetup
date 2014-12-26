@@ -15,11 +15,20 @@ class BusinessServicesModelTrademark extends JModelItem
          */
         protected $messages;
         protected $userId;
+        protected $service_name;
 
         public function __construct()
         {   
             parent::__construct();
             $this->userId = JFactory::getUser()->id;
+            $this->user = JFactory::getUser();
+            $this->service_name  = array('0' => 'Any',
+                                '1' => 'Privare Limited Company',
+                                '2' => 'Limited Liability',
+                                '3' => 'One Person Company',
+                                '4' => 'Public Limited Company',
+                                '5' => 'Trademark and Copyright'
+                        );
 
         }
         /**
@@ -56,7 +65,13 @@ class BusinessServicesModelTrademark extends JModelItem
     $db = $this->getDbo();
     //$query = $db->getQuery(true);
     $status = strtolower($status);
-    ($Alluser) ? $usercondition = "1" : $usercondition = "a.userId = '$this->userId'";
+if(isset($this->user->groups[8]) && $this->user->groups[8] == 8)
+    { $usercondition = "1"; }
+elseif(isset($this->user->groups[7]) && $this->user->groups[7] == 7)
+    { $usercondition = "a.assignedId = $this->userId"; }
+else{
+     $usercondition = "a.userId = $this->userId";
+}
         if ($register_id) {
             $strQry="SELECT *, a.register_id FROM #__client_company_registration as a 
             WHERE a.register_id = '$register_id'";
@@ -77,19 +92,19 @@ class BusinessServicesModelTrademark extends JModelItem
         $result = $db->loadObjectList();
         foreach ($result as &$each) {
             if($each->comment == '' && $each->status == 'pending') 
-                $each->comment = "Please Complete the Pending Details of Registerd id $each->register_id";
+                $each->comment = "Please Complete the Pending Details of service ".$this->service_name[$each->service_flag]." having Service No. $each->register_id";
             if($each->comment == '' && $each->status == 'process') 
-                $each->comment = "Your service with Registerd id $each->register_id is under processing.";
+                $each->comment = "Your service ".$this->service_name[$each->service_flag]." having Service No. $each->register_id is under processing.";
             if($each->comment == '' && $each->status == 'review') 
-                $each->comment = "Your service with Registerd id $each->register_id is under Review.";
+                $each->comment = "Your service ".$this->service_name[$each->service_flag]." having Service No. $each->register_id is under Review.";
         }
         return $result;
      }
      public function saveService($data = array(''))
      {
-          $dt = new stdClass();
+            $dt = new stdClass();
             $dt->register_id = '';
-            $dt->status = 'process';
+            $dt->status = 'review';
             $dt->assignedId = '';
             $dt->comment = '';
             $dt->dueDate = '0000-00-00';
@@ -131,20 +146,28 @@ class BusinessServicesModelTrademark extends JModelItem
      public function getDocs($Alluser = FALSE)
      {
         $db = $this->getDbo();
-        $strQry = "SELECT a.register_id, userId, assignedId, service_flag, status, recId, director_din_file,
-         director_pancard_file, idproof_file, addressproof_file, director_photograph_file FROM #__client_company_registration as a 
+        $strQry = "SELECT 
+        a.register_id, userId, assignedId, service_flag, status, recId, director_din_file,
+        director_pancard_file, idproof_file, addressproof_file, director_photograph_file 
+        FROM #__client_company_registration as a 
         left outer join #__client_company_documents as b on a.register_id=b.register_id
         left outer join #__bstrademarks as c on a.register_id = c.record_id
         WHERE a.register_id = b.register_id or a.register_id = c.record_id";
 
         $db->setQuery($strQry);
         $results = $db->loadObjectList();
-        //print_r($results);
+        //print_r($readdir()sults);
         return $results;
      }
      public function getServicesCount($status=null,$userId = FALSE)
      {
-        ($userId) ? $usercondition = "a.userId = '$userId'" : $usercondition = "1";
+        if(isset($this->user->groups[8]) && $this->user->groups[8] == 8)
+    {  $usercondition = "1"; }
+elseif(isset($this->user->groups[7]) && $this->user->groups[7] == 7)
+    { $usercondition = "a.assignedId = $this->userId"; }
+else{
+    $usercondition = "a.userId = $this->userId";
+}
         $db = $this->getDbo();
         if($status && $status == 'pending'){
             $strQry="SELECT count(*) as total FROM #__client_company_registration as a 
@@ -175,7 +198,8 @@ class BusinessServicesModelTrademark extends JModelItem
             $query->from($db->quoteName('#__client_company_registration'));
             // /die;
             $db->setQuery($query);
-            return $result = $db->loadObject()->userId;
+            $result = $db->loadObject();
+            return ($result) ? $result : false;
         }
     }
 
@@ -256,21 +280,46 @@ class BusinessServicesModelTrademark extends JModelItem
     public function upload($files,$uname=NULL)
     {
         foreach ($files as $file) {
-        $file_name = $file['name'];
-        $src = $file['tmp_name'];
-        $size = $file['size'];
-        $upload_error = $file['error'];
-        $type = $file['type'];
-        $dest = JPATH_ROOT."/client-docs/$uname/$file_name";
-        if (isset($file_name) && $file_name !=NULL && $file_name != '') {
-        // Move the uploaded file.
-        return JFile::upload( $src, $dest );
+            $file_name = $file['name'];
+            $src = $file['tmp_name'];
+            $size = $file['size'];
+            $upload_error = $file['error'];
+            $type = $file['type'];
+            $dest = JPATH_ROOT."/client-docs/$uname/$file_name";
+            $uri = JURI::base()."client-docs/$uname/$file_name";
+            if (isset($file_name) && $file_name !=NULL && $file_name != '') {
+                $upload = JFile::upload( $src, $dest);
+                if($upload){
+                    $db     = $this->getDbo();
+                    $query  = $db->getQuery(true);
+                    $dt = new stdClass();
+                    $dt->url = $uri;
+                    $dt->name = $file_name;
+                    $result = ($db->insertObject('#__client_docs', $dt)) ? $db->insertid() : NULL ;
+                }
+            }
         }
+        return $result;
+    }
+    public function getFile($id)
+    {
+        if($id){
+            $db = JFactory::getDBO();
+            $query = $db->getQuery(true);
+            // delete all custom keys for user 1001.
+            $query->SELECT('*');
+            $query->where($db->quoteName('id') . '=' . $id);
+            $query->from($db->quoteName('#__client_docs'));
+            // /die;
+            $db->setQuery($query);
+            $result = $db->loadObject();
+            return ($result) ? $result : false;
         }
     }
-    public function genCsv($csvFrom,$Alluser = 1)
+    public function genCsv($csvFrom = null,$Alluser = 1)
         {
             ($Alluser) ? $usercondition = "1" : $usercondition = "a.userId = '$this->userId'";
+            if (!is_numeric($csvFrom) ):
             switch ($csvFrom) {
                 case 'services':
                         $query ="SELECT 
@@ -307,8 +356,52 @@ class BusinessServicesModelTrademark extends JModelItem
                         $query ="";
                     break;
             }
+            else:
+            $query = "SELECT reg.register_id as 'Service Id',
+                    user.username AS 'User Name',
+                    reg.country_state AS 'State',
+                    reg.no_of_directors AS 'No of Directors',
+                    reg.total_gov_fee AS 'Government Fee',
+                    reg.total_price_fee AS 'Price Fee',
+
+                    contact.contact_first_name AS 'Contact First Name',
+                    contact.contact_last_name AS 'Contact Last Name',
+                    contact.contact_number AS 'Contact Phone No',
+                    contact.mail_id AS 'Contact Mail Id',
+
+                    company.first_name AS 'Company Name 1st Choice',
+                    company.second_name AS 'Company Name 2nd Choice',
+                    company.third_name AS 'Company Name 3rd Choice',
+                    company.name_significance AS 'Company Name Significance',
+                    company.company_main_object AS 'Company Main Object',
+                    company.registered_address AS 'Company Registered Address',
+                    company.police_station_Name_and_address AS 'Police Station Details',
+                    company.addressproof AS 'Company Address Proof',
+
+                    doc.`director_name` AS 'Director Name',
+                    doc.director_address AS 'Director Address',
+                    doc.director_mail_id AS 'Director Address',
+                    doc.director_qualification AS 'Director Address',
+                    doc.director_birthplace AS 'Director Address',
+                    doc.promoters_name AS 'Director Address',
+                    doc.promoters_mail AS 'Director Address',
+                    doc.director_share AS 'Director Address',
+                    doc.promoters_percentage_of_share AS 'Director Address',
+
+                    reg.status AS 'Status',
+                    reg.comment AS 'Comment',
+                    reg.date_created AS 'Registered On',
+                    reg.dueDate As 'Due Date'
+                    FROM #__client_company_registration as reg 
+                    left outer join #__client_contact_and_entity_info as contact on reg.register_id = contact.register_id
+                    left outer join #__client_company_info as company on reg.register_id=company.register_id 
+                    left outer join #__client_company_documents as doc on reg.register_id = doc.register_id
+                    left outer join #__bstrademarks as trademark on reg.register_id = trademark.record_id
+                    left outer join #__users as user on reg.userId = user.id 
+                    WHERE reg.register_id = $csvFrom";
+            endif;
             // echo "<pre>";
-            // print_r($csvData);
+            // echo ($csvFrom);
             // echo "</pre>";
             /*
             // Using the function
@@ -316,6 +409,7 @@ class BusinessServicesModelTrademark extends JModelItem
             // $db_conn should be a valid db handle
             */
             // output as an attachment
+
             $this->query_to_csv($query,true, true);
 
             // output to file system
@@ -373,3 +467,4 @@ class BusinessServicesModelTrademark extends JModelItem
         fclose($fp);
     }
 }
+

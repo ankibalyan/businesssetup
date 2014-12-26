@@ -60,9 +60,10 @@ defined('_JEXEC') or die;
 							<tbody>
 							<?php if(count($this->allMsg)): ?>
 							<?php foreach ($this->allMsg as $message): ?>
-								<tr>
+								<?php $addClass = ($message->clicked)? 'read' : 'unread' ?>
+								<tr class="<?php echo $addClass; ?>">
 									<td><?php echo $message->subject; ?></td>
-									<td><a  href='<?php echo JURI::root(false)."index.php/component/businessservices?view=message&Itemid=$message->recId" ?>'><?php echo $message->custname; ?></a></td>
+									<td><a  href='javascript:void(0)' onclick="saveMsgClick(<?php echo $message->recId; ?>);"><?php echo $message->custname; ?></a></td>
 									<td><?php echo $message->mailid ?></td>
 									<td><?php echo $message->phoneno ?></td>
 								</tr>
@@ -79,3 +80,23 @@ defined('_JEXEC') or die;
 		</div>
 	</div>
 </div>
+<script>
+	function saveMsgClick (Id) {
+		jQuery.ajax({
+			url: '<?php echo JURI::root(false)."index.php/component/businessservices?view=message&format=ajax" ?>',
+			type: 'GET',
+			data: {scId: Id},
+		})
+		.done(function() {
+			window.location.href = '<?php echo JURI::root(false)."index.php/component/businessservices?view=message&Itemid=" ?>'+Id;
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
+		return false;
+	}
+</script>

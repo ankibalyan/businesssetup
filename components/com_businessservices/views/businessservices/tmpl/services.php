@@ -37,7 +37,7 @@ defined('_JEXEC') or die;
 								<table id="sortTable">
 									<thead>
 										<tr>
-											<th>Registerd ID</th>
+											<th>Service No</th>
 											<th>Service Name</th>
 											<th>Applied On</th>
 											<th>Status</th>
@@ -48,10 +48,18 @@ defined('_JEXEC') or die;
 										<?php foreach ($this->trademarkPending as $service){ ?>
 										<tr>
 											<td><?php echo "$service->register_id"; ?></td>
-											<td><a href="<?php echo $this->links[$service->service_flag];?>" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
+											<?php if($service->status == 'process' || $service->status == 'completed'): ?>
+											<td><a href="javascript:void(0)" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
+										<?php else: ?>
+											<td><a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id ?>" title="View Record"><?php echo $this->service_name[$service->service_flag]; ?></a></td>
+										<?php endif; ?>
 											<td><?php echo substr($service->date_created, 0, 10) ?></td>
 											<td class="<?php echo $service->status ?>"><?php echo $this->statuses[$service->status]; ?></td>
-											<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="View Record" class="jmodedit"> Upload </a></td>
+											<?php if($service->status == 'process' || $service->status == 'completed'): ?>
+												<td>-</td>
+											<?php else: ?>																
+												<td><a href='<?php echo jRoute::_("index.php?option=com_businessservices&layout=service&Itemid=$service->register_id") ?>' title="View Record" class="jmodedit"> Upload </a></td>
+										<?php endif; ?>
 										</tr>
 										<?php } ?>
 									</tbody>

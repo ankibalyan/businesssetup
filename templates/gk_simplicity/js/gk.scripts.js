@@ -523,12 +523,19 @@ jQuery(document).ready(function () {
   jQuery('.address').blur(function (index) {
     validataddress(jQuery(this).attr('id'));  
   });
+  
   jQuery('.validatenumber').blur(function (index) {
     validateNumber(jQuery(this).attr('id'));
   });
-  jQuery('.filevalidate').change(function (index) {
-    validateFile(jQuery(this).attr('id'));
+  jQuery('.required').blur(function (index) {
+    validateRequired(jQuery(this).attr('id'));
   });
+  jQuery('.required').change(function (index) {
+    validateRequired(jQuery(this).attr('id'));
+  });
+  // jQuery('.filevalidate').change(function (index) {
+  //   validateFile(jQuery(this).attr('id'));
+  // });
   function validateChars(id) {
     var charsonly = jQuery('#' + id).val();
     if (charsonly == '')
@@ -551,6 +558,21 @@ jQuery(document).ready(function () {
     }
   }
   function validataddress(id) {
+    var charsonly = jQuery('#' + id).val();
+    if (charsonly == '')
+    {
+      jQuery('#' + id).addClass('error');
+      jQuery('#' + id).next('span.error_field').html('Please enter the value.').css('display', 'block');
+      return errFlag = 1;
+    } 
+    else
+    {
+      jQuery('#' + id).removeClass('error');
+      jQuery('#' + id).next('span.error_field').html('').css('display', 'none');
+      return errFlag = 0;
+    }
+  }
+  function validateRequired(id) {
     var charsonly = jQuery('#' + id).val();
     if (charsonly == '')
     {
@@ -656,34 +678,32 @@ jQuery(document).ready(function () {
       return errFlag = 0;
     }
   }
-  //   jQuery('.validatenumber').focus(function (index) {
-  //   var id = jQuery(this).attr('id');
-  //   jQuery('#' + id).keyup(function (e) {
-  //     // Allow: backspace, delete, tab, escape, enter and .
-  //     if (jQuery.inArray(e.keyCode, [
-  //       46,
-  //       8,
-  //       9,
-  //       27,
-  //       13,
-  //       110,
-  //       190
-  //     ]) !== - 1 ||
-  //     // Allow: Ctrl+A
-  //     (e.keyCode == 65 && e.ctrlKey === true) ||
-  //     // Allow: home, end, left, right
-  //     (e.keyCode >= 35 && e.keyCode <= 39)) {
-  //       // let it happen, don't do anything
-  //       console.log('valid keys');
-  //       return ;
-  //     }
-  //     // Ensure that it is a number and stop the keypress
-  //     if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-  //       console.log('invalid ');
-  //       e.preventDefault();
-  //     }
-  //   });
-  // });
+    jQuery('.validatenumber').focus(function (index) {
+    var id = jQuery(this).attr('id');
+    jQuery('#' + id).keyup(function (e) {
+      // Allow: backspace, delete, tab, escape, enter and .
+      if (jQuery.inArray(e.keyCode, [
+        46,
+        8,
+        9,
+        27,
+        13,
+        110,
+        190
+      ]) !== - 1 ||
+      // Allow: Ctrl+A
+      (e.keyCode == 65 && e.ctrlKey === true) ||
+      // Allow: home, end, left, right
+      (e.keyCode >= 35 && e.keyCode <= 39)) {
+        // let it happen, don't do anything
+        return ;
+      }
+      // Ensure that it is a number and stop the keypress
+      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+      }
+    });
+  });
 
   jQuery('#myform').submit(function () {
     errFlag = 0;
@@ -704,6 +724,65 @@ jQuery(document).ready(function () {
       errFlag = 1;
     }
     if (validataddress('address') == 1)
+    {
+      errFlag = 1;
+    }
+    if (errFlag == 1)
+    {
+      return false;
+    } 
+    else
+    {
+      return true;
+    }
+  });
+
+  jQuery('#sfMessageForm').submit(function (event) {
+    errFlag = 0;
+    if (validateRequired('subject') == 1)
+    {
+      errFlag = 1;
+    }
+    if (validateRequired('message') == 1)
+    {
+      errFlag = 1;
+    }
+    if (errFlag == 1)
+    {
+      return false;
+    } 
+    else
+    {
+      return true;
+    }
+  });
+
+    jQuery('#sfReplyForm').submit(function (event) {
+    errFlag = 0;
+    if (validateRequired('message') == 1)
+    {
+      errFlag = 1;
+    }
+    if (errFlag == 1)
+    {
+      return false;
+    } 
+    else
+    {
+      return true;
+    }
+  });
+  jQuery('#eventForm').submit(function (event) {
+    errFlag = 0;
+    if (validateRequired('eventDate') == 1)
+    {
+      errFlag = 1;
+    }
+    if (validateRequired('eventTitle') == 1)
+    {
+      errFlag = 1;
+    }
+    if (validateRequired('eventDesc') == 1)
     {
       errFlag = 1;
     }
@@ -763,6 +842,10 @@ jQuery(document).ready(function () {
         jQuery('#messagedisplay').html(' Request is already sent.');
       }
     }
+  });
+  jQuery('#member-profile').submit(function(event) {
+        event.preventDefault();
+        return false;
   });
   jQuery('#directorMail').change(function () {
     errFlag = 0;
@@ -834,6 +917,31 @@ jQuery(document).ready(function () {
         jQuery('#dirshare' + i).next('span.error_field').css('display', 'none');
       }
     });
+
+      var i = jQuery('.cdnpclas').attr('data-value');
+      if (jQuery('#cdnp' + i).attr('checked')) {
+        jQuery('#dnp' + i).ready(function () {
+          jQuery('#dnp' + i).css({
+            display: 'none'
+          });
+          jQuery('#dirshare' + i).addClass('validatefield validatenumber');
+          jQuery('#dirdnp' + i + ' :input').prop('disabled', false);
+          jQuery('#promotersname' + i).removeClass('validatefield charsonly').next('span.error_field').css('display', 'none');
+          jQuery('#promotersmail' + i).removeClass('validatefield validatemail').next('span.error_field').css('display', 'none');
+          jQuery('#promotersshare' + i).removeClass('validatefield validatenumber').next('span.error_field').css('display', 'none').val('');
+        });
+      } else {
+        jQuery('#dnp' + i).css({
+          display: ''
+        });
+        jQuery('#dirshare' + i).removeClass('validatefield validatenumber error');
+        jQuery('#dirdnp' + i + ' :input').prop('disabled', true);
+        jQuery('#promotersname' + i).addClass('validatefield charsonly').removeClass('error');
+        jQuery('#promotersmail' + i).addClass('validatefield validatemail').removeClass('error');
+        jQuery('#promotersshare' + i).addClass('validatefield validatenumber').removeClass('error');
+        jQuery('#dirshare' + i).val('');
+        jQuery('#dirshare' + i).next('span.error_field').css('display', 'none');
+      }
   }
   // jQuery('.validatefield').blur(function (index) {
   //   if (jQuery(this).val() == '')
@@ -934,16 +1042,16 @@ jQuery(document).ready(function () {
         errFlag = 1;
       }
     });
-    jQuery('.filevalue').each(function (index, value) {
-      id = jQuery(value).attr('id');
-      if(validateFile(id)==1)
-      {
-        lastChar = id.substr(id.length - 1);
-        jQuery('#litab' + lastChar).addClass('error');
-        errArray.push(lastChar);
-        errFlag = 1;
-      }
-    });
+    // jQuery('.filevalue').each(function (index, value) {
+    //   id = jQuery(value).attr('id');
+    //   if(validateFile(id)==1)
+    //   {
+    //     lastChar = id.substr(id.length - 1);
+    //     jQuery('#litab' + lastChar).addClass('error');
+    //     errArray.push(lastChar);
+    //     errFlag = 1;
+    //   }
+    // });
     var shareval = 0;
     for (i = 1; i <= totalDir; i++)
     {
@@ -1170,8 +1278,10 @@ jQuery(document).ready(function () {
         var source = jQuery('<div>' + response + '</div>');
         response = source.find('#fileStatus').html();
         redirect = source.find('#redirectUrl').html();
-        if (response == 1 || response == '1')
+        redirect += '&params=2';
+        if (response >= 1 || response >= '1')
         {
+
           window.location.href = redirect;
         } 
         else

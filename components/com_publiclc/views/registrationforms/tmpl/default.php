@@ -26,7 +26,6 @@ defined('_JEXEC') or die;
 //echo $HTML_ROOT = str_replace($_SERVER['DOCUMENT_ROOT'], '', $JBASE).'/';
 
 		if(isset($_POST["totalDir"]) && $userID){
-		
 		$fileStatus= $model->saveform2Documents($serviceId);
 
 		}
@@ -45,7 +44,7 @@ defined('_JEXEC') or die;
 		if(isset($_POST["regService"]['statelist']) && $userID && isset($_POST["regService"]['serviceId'])){
 			$serviceId=$_POST["regService"]['serviceId'];
 			echo "<div id = 'fileStatus'>" . $fileStatus= $model->saveformRegistration($serviceId) . "</div>";
-			echo "<div id = 'redirectUrl'>" . $this->baseurl . "/index.php/public-limited-company-service-flow?params=2</div>";
+			echo "<div id = 'redirectUrl'>" . $this->baseurl . "/index.php/public-limited-company-service-flow?rid=$fileStatus&params=2</div>";
 		}
 		else
 		{

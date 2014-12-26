@@ -5,7 +5,6 @@
 		<fieldset name="params" label="COM_USERS_SETTINGS_FIELDSET_LABEL">
 
 			<field name="editor" type="plugins" folder="editors"
-				description="COM_USERS_USER_FIELD_EDITOR_DESC"
 				label="COM_USERS_USER_FIELD_EDITOR_LABEL"
 			>
 				<option value="">JOPTION_USE_DEFAULT</option>
@@ -13,14 +12,12 @@
 
 			<field name="timezone" type="timezone"
 				label="COM_USERS_USER_FIELD_TIMEZONE_LABEL"
-				description="COM_USERS_USER_FIELD_TIMEZONE_DESC"
 			>
 				<option value="">JOPTION_USE_DEFAULT</option>
 			</field>
 
 			<field name="language" type="language"
 				client="site"
-				description="COM_USERS_USER_FIELD_FRONTEND_LANGUAGE_DESC"
 				label="COM_USERS_USER_FIELD_FRONTEND_LANGUAGE_LABEL"
 				filter="cmd"
 			>

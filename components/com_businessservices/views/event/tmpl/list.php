@@ -44,7 +44,7 @@ defined('_JEXEC') or die;
 				</div>
 			<?php endif; ?>
 			</div>
-			<!-- <pre><?php print_r($this->allEvents) ?></pre> -->
+			
 			<div class="sfGrids">
 				<div class="sfGrid-Col-12">
 					<div class="sfGrids col-bordered">

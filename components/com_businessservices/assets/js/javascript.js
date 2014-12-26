@@ -26,16 +26,21 @@
             i++;
         }
         if (event) {
-            alert(event.Title);
+            jQuery('#popu').trigger('click');
+            jQuery('#popuCont').html(event.Title);
         }
     }
-});
+    });
 
 		jQuery( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
 		jQuery( "#dialog" ).dialog();
-
+if(jQuery('#sortTable').length){
     jQuery('#sortTable').DataTable();
-    jQuery("#browser").treeview();
+}
+
+    
+    
+    //jQuery("#browser").treeview();
     /*th = jQuery('#sortTable');
     // setInterval(function (argument) {
     //     th = jQuery('#sortTable tr').size();
@@ -94,5 +99,5 @@
 // };
 // jQuery.ajax(options);
 //     }
-
+    
 });

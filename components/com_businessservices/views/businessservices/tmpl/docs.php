@@ -56,16 +56,16 @@ defined('_JEXEC') or die;
 									</thead>
 									<tbody>
 										<?php foreach ($this->allDocs as $service){ ?>
-											<tr>
-												<td>Service Id: <?php echo "$service->register_id"; ?></td>
-											</tr>
+											<!-- <tr>
+												<td>Service No: <?php echo "$service->register_id"; ?></td>
+											</tr> -->
 										<?php if(isset($service->director_photograph_file ) && $service->director_photograph_file != '' ): ?>
 											<?php $adr = "client-docs/".$this->user->username.'/'.$service->director_photograph_file; ?>
 											<?php if (file_exists($adr)): ?>
 												<tr>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director photograph file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php elseif(isset($service->director_din_file ) && $service->director_din_file != ''): ?>
@@ -75,7 +75,7 @@ defined('_JEXEC') or die;
 													<td><?php echo "$service->register_id"; ?></td>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director din file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php elseif(isset($service->idproof_file ) && $service->idproof_file != ''): ?>
@@ -85,7 +85,7 @@ defined('_JEXEC') or die;
 													<td><?php echo "$service->register_id"; ?></td>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director Id Proof file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php elseif(isset($service->director_din_file ) && $service->director_din_file != ''): ?>
@@ -95,7 +95,7 @@ defined('_JEXEC') or die;
 													<td><?php echo "$service->register_id"; ?></td>
 													<td><?php echo $this->service_name[$service->service_flag]; ?></td>
 													<td><?php echo "director din file"; ?></td>
-													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?edit=3' ?>">Edit</a></td>
+													<td><a href="<?php echo $adr ?>">View</a>/<a href="<?php echo $this->links[$service->service_flag].'?rid='.$service->register_id.'&edit=3' ?>">Edit</a></td>
 												</tr>
 											<?php endif; ?>
 									<?php endif; ?>
@@ -108,6 +108,31 @@ defined('_JEXEC') or die;
 										<?php echo "You have no $this->status services"; ?>
 									</div>
 								</div>
+							<?php endif; ?>
+							<?php if($this->trademarkPending): ?>
+								<table>
+									<thead>
+										<tr>
+											<td colspan="2">
+												<h3>Documents Uploaded To / By Admins</h3>
+											</td>
+										</tr>
+										<tr>
+											<th colspan="2">Files</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach ($this->trademarkPending as $service){ ?>
+										<?php if(isset($service->docId ) && $service->docId != '' ): ?>
+											<?php 	$file = $this->trademark_m->getFile($service->docId); ?>
+												<tr>
+													<td >Service No: <?php echo "$service->register_id"; ?></td>
+													<td ><a href="<?php echo $file->url ?>"><?php echo $file->name ?></a></td>
+												</tr>
+										<?php endif; ?>
+										<?php } ?>
+									</tbody>
+								</table>
 							<?php endif; ?>
 							</div>
 						</div>

@@ -33,7 +33,7 @@ class opc_servicesModelServiceflow extends JModelItem {
         }
         parent::__construct($config);
     }
-      function getData($userId , $serviceId){
+      function getData($userId = null , $serviceId = NULL){
      
         $db = $this->getDbo();
         $strQry="SELECT a.register_id,b.recId as dirdetails,c.recId as companyInfo,country_state,no_of_directors,Registration_Pvt_Ltd_gov_fee,Registration_Pvt_Ltd_price,PAN_Application_gov_fee,PAN_Application_price, TAN_Application_gov_fee,
@@ -48,7 +48,7 @@ class opc_servicesModelServiceflow extends JModelItem {
         left outer join awfrq_client_company_documents as b on a.register_id=b.register_id 
         left outer join awfrq_client_company_info as c on a.register_id=c.register_id 
         left outer join awfrq_client_contact_and_entity_info as d on a.register_id=d.register_id 
-        WHERE userId= $userId and service_flag='$serviceId' and a.delFlag=0 ";
+        WHERE userId= $userId and a.register_id='$serviceId' and a.delFlag=0 ";
 
         $db->setQuery($strQry);
         $result = $db->loadObjectList();
@@ -80,7 +80,7 @@ class opc_servicesModelServiceflow extends JModelItem {
                                                 $app = JFactory::getApplication();
                                                 $strqry_director1="select no_of_directors  from  awfrq_client_company_registration  where register_id=$register_id";
                                                  if($dirCount > $noOfDir) 
-                                                $app->Redirect( 'index.php/component/fileupload/fileuploadss?edit=4' );
+                                                $app->Redirect( "index.php/component/fileupload/fileuploadss?rid=$registerid&edit=4" );
 
                                                 $query1=$db->setQuery($strqry_director1);
                                                 $result = $db->loadObject();
@@ -92,11 +92,11 @@ class opc_servicesModelServiceflow extends JModelItem {
                                                 $result = $db->loadObject();
                                                 $dirCount=$result->dirCount;
                                                 if($dirCount==$noOfDir) 
-                                                $app->Redirect( 'index.php/component/fileupload/fileuploadss?id=0&edit=3' );
+                                                $app->Redirect( "index.php/component/fileupload/fileuploadss?rid=$registerid&edit=3" );
                                                 else if($dirCount  < $noOfDir)
                                                     $slno=$dirCount+1;
                                                     else  if($dirCount > $noOfDir) 
-                                                $app->Redirect( 'index.php/component/fileupload/fileuploadss?edit=4' );
+                                                $app->Redirect( "index.php/component/fileupload/fileuploadss?rid=$registerid&edit=4" );
                                                 return $slno;
                                         }
      

@@ -20,8 +20,8 @@ defined('_JEXEC') or die;
 		$app	= JFactory::getApplication();
 
 		if ($user->id == 0) {
-		$app->Redirect( 'index.php/private-limited-company-login', 'Please login !!!' );
-		} 
+		$app->Redirect( 'index.php/login', 'Please login !!!' );
+		}
       $model = $this->getModel('file', 'FileuploadModel');
 	   $JBASE = str_replace('\\','/', JPATH_BASE);
 	   $ftppath = $JBASE . '/client-docs';
@@ -47,7 +47,7 @@ defined('_JEXEC') or die;
 		if(isset($_POST["regService"]['statelist']) && $userID && isset($_POST["regService"]['serviceId'])){
 			$serviceId=$_POST["regService"]['serviceId'];
 			echo "<div id = 'fileStatus'>" . $fileStatus= $model->saveformRegistration($serviceId) . "</div>";
-			echo "<div id = 'redirectUrl'>" . $this->baseurl . "/index.php/component/fileupload/fileuploadss?param=2</div>";
+			echo "<div id = 'redirectUrl'>$this->baseurl/index.php/component/fileupload/fileuploadss/?rid=$fileStatus&amp;params=2</div>";
 		}
 		else
 		{
